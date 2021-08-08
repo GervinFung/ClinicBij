@@ -1,7 +1,7 @@
 # WAD Assignment
 
 - npm install -g yarn (yarn is just better & I could not revert back to npm for the time being)
-- `yarn add (install all dependencies)`
+- `yarn install (install all dependencies)`
 - `yarn start (start server)`
 - `yarn test (execute test code)`
 

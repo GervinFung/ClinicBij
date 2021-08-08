@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useRef, useState } from 'react';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 
@@ -7,6 +6,8 @@ import {validateUsername} from '../logic/userName';
 import {validateIdentityCard} from '../logic/identityCard';
 import {validatePassword} from '../logic/password';
 
+import { ADMIN, USER } from '../../App';
+
 const RegistryTextInput = (props) => {
 
     return (
@@ -14,13 +15,15 @@ const RegistryTextInput = (props) => {
             <TextInput
                 ref={props.propsRef}
                 secureTextEntry={props.secureTextEntry}
-                autoCapitalize='none' 
+                autoCapitalize="none"
                 autoCorrect={false}
                 style={styles.inputBox}
                 placeholder={props.placeholder}
-                onChangeText={(text) => props.setInput(text)}
+                onChangeText={(text) => {
+                    props.setInput(text);
+                    props.setInputMessage(props.validationFunction(text));
+                }}
                 onSubmitEditing={() => {
-                    props.setInputMessage(props.validationFunction(props.input));
                     props.nextRef.focus();
                 }}
                 onEndEditing={() => {
@@ -32,7 +35,7 @@ const RegistryTextInput = (props) => {
             </View>
         </View>
     );
-}
+};
 
 const ConfirmPasswordTextInput = (props) => {
 
@@ -43,7 +46,7 @@ const ConfirmPasswordTextInput = (props) => {
                 editable={props.editable}
                 selectTextOnFocus={props.editable}
                 secureTextEntry={props.secureTextEntry}
-                autoCapitalize='none' 
+                autoCapitalize="none"
                 autoCorrect={false}
                 style={styles.inputBox}
                 placeholder={props.placeholder}
@@ -55,7 +58,7 @@ const ConfirmPasswordTextInput = (props) => {
             </View>
         </View>
     );
-}
+};
 
 
 const RegistryScreen = ({ navigation }) => {
@@ -76,7 +79,7 @@ const RegistryScreen = ({ navigation }) => {
 
     const stringIsEmpty = (message) => {
         return message.length === 0;
-    }
+    };
 
     const signupButtonPressed = () => {
         if (stringIsEmpty(emailMessage) &&
@@ -86,7 +89,7 @@ const RegistryScreen = ({ navigation }) => {
         stringIsEmpty(confirmPasswordMessage)) {
             navigation.navigate('LoginScreen');
         }
-    }
+    };
 
     const showInputInvalid = (message) => {
         if (message.length !== 0) {
@@ -94,14 +97,14 @@ const RegistryScreen = ({ navigation }) => {
                 <Text style={styles.inputInvalidText}>{message}</Text>
             );
         }
-    }
+    };
 
     const checkBothPasswordSame = (confirmPassword) => {
         if (password === confirmPassword) {
             return '';
         }
         return 'Both passwords are not the same';
-    }
+    };
 
     const userNameInput = useRef(TextInput);
     const emailInput = useRef(TextInput);
@@ -111,7 +114,7 @@ const RegistryScreen = ({ navigation }) => {
     const signUpButton = useRef(TouchableOpacity);
 
     return (
-        <KeyboardAvoidingView behavior='padding' style={styles.container}>
+        <KeyboardAvoidingView behavior="padding" style={styles.container}>
             <View style={styles.generalView}><Text style={styles.title}>Sign Up</Text></View>
             <View style={[styles.generalView, styles.inputView]}>
                 <RegistryTextInput
@@ -176,7 +179,10 @@ const RegistryScreen = ({ navigation }) => {
             </View>
             <View style={[styles.generalView]}>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('LoginScreen')}
+                    onPress={() => navigation.navigate('MainScreen', {
+                        admin: ADMIN,
+                        user: USER,
+                    })}
                 >
                     <Text style={styles.loginText}>Already haven an account? Login</Text>
                 </TouchableOpacity>
@@ -188,7 +194,6 @@ const RegistryScreen = ({ navigation }) => {
                     <Text style={styles.signup}>SIGN UP</Text>
                 </TouchableOpacity>
             </View>
-            <StatusBar style='auto'/>
         </KeyboardAvoidingView>
     );
 };
@@ -254,7 +259,7 @@ const styles = StyleSheet.create({
         color: '#121212',
         paddingBottom: 10,
         fontSize: 17,
-    }
+    },
 });
 
 export default RegistryScreen;

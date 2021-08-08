@@ -1,13 +1,13 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image } from 'react-native';
+import { ADMIN, USER } from '../../App';
 
 const WelcomeScreen = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.generalView}><Text style={styles.title}>Welcome to MySejahtera</Text></View>
-            <View style={styles.generalView}><Image style={styles.welcomeImage} source={require('../img/welcomeScreen.jpg')}/></View>
+            <View style={styles.generalView}><Image style={styles.welcomeImage} source={require('../../img/welcomeScreen.jpg')}/></View>
             <View style={[styles.generalView]}>
                 <TouchableOpacity
                     style={styles.signupButton}
@@ -17,12 +17,14 @@ const WelcomeScreen = ({ navigation }) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.loginButton}
-                    onPress={() => navigation.navigate('LoginScreen')}
+                    onPress={() => navigation.navigate('MainScreen', {
+                        admin: ADMIN,
+                        user: USER,
+                    })}
                 >
                     <Text style={styles.loginText}>LOGIN</Text>
                 </TouchableOpacity>
             </View>
-            <StatusBar style='auto'/>
         </SafeAreaView>
     );
 };
@@ -50,7 +52,7 @@ const styles = StyleSheet.create({
     welcomeImage: {
         width: 230,
         height: 230,
-        resizeMode: "contain",
+        resizeMode: 'contain',
     },
     loginButton: {
         backgroundColor: '#059862',
@@ -93,7 +95,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         color: '#059862',
         fontSize: 17,
-    }
+    },
 });
 
 export default WelcomeScreen;

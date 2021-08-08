@@ -1,9 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useState, useRef } from 'react';
-import { StyleSheet, Text, TextInput, View, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity, KeyboardAvoidingView, Image } from 'react-native';
 import {getUserFromUserList} from '../logic/tempUserList';
 
-const LoginScreen = ({ navigation }) => {
+import { ADMIN, USER } from '../../App';
+
+const LoginScreen = ({ route, navigation }) => {
+
+    const { userType } = route.params;
 
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
@@ -24,7 +27,7 @@ const LoginScreen = ({ navigation }) => {
             setInputInvalid(false);
             navigation.navigate('RegistryScreen');
         }
-    }
+    };
 
     const showInputInvalidText = () => {
         if (inputInvalid) {
@@ -33,18 +36,30 @@ const LoginScreen = ({ navigation }) => {
                     <Text style={styles.inputInvalidText}>Invalid username/password</Text>
                     <Text style={styles.inputInvalidText}>Please try again</Text>
                 </View>
-            )
+            );
         }
-    }
+    };
+
+    const getImage = () => {
+        if (userType === ADMIN.toLowerCase()) {
+            return require('../../img/admin.jpg');
+        } else if (userType === USER.toLowerCase()) {
+            return require('../../img/user.jpg');
+        }
+        throw new Error('userType can only be ADMIN or USER only');
+    };
 
     return (
         <KeyboardAvoidingView style={styles.container}>
-            <View style={styles.generalView}><Text style={styles.title}>MySejahtera</Text></View>
+            <View style={styles.generalView}>
+                <Image style={styles.image} source={getImage()}/>
+                <Text style={styles.title}>{userType.toUpperCase()}</Text>
+            </View>
             <View style={[styles.generalView, styles.inputView]}>
                 <TextInput
                     ref={userNameInput}
                     style={styles.inputBox}
-                    placeholder='Username'
+                    placeholder="Username"
                     onChangeText={(text) => setUserName(text)}
                     onSubmitEditing={() => passwordInput.current.focus()}
                 />
@@ -52,7 +67,7 @@ const LoginScreen = ({ navigation }) => {
                     ref={passwordInput}
                     secureTextEntry={true}
                     style={styles.inputBox}
-                    placeholder='Password'
+                    placeholder="Password"
                     onChangeText={(text) => setPassword(text)}
                     onSubmitEditing={() => loginButton.current.focus()}
                 />
@@ -74,7 +89,6 @@ const LoginScreen = ({ navigation }) => {
                     <Text style={styles.loginText}>LOGIN</Text>
                 </TouchableOpacity>
             </View>
-            <StatusBar style='auto'/>
         </KeyboardAvoidingView>
     );
 };
@@ -98,6 +112,11 @@ const styles = StyleSheet.create({
         color: '#2196F3',
         fontSize: 30,
         paddingBottom: 10,
+    },
+    image: {
+        width: 200,
+        height: 200,
+        resizeMode: 'contain',
     },
     inputBox: {
         // backgroundColor: '#121212',
@@ -144,7 +163,7 @@ const styles = StyleSheet.create({
         color: '#121212',
         paddingBottom: 10,
         fontSize: 17,
-    }
+    },
 });
 
 export default LoginScreen;
