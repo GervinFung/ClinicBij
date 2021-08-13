@@ -1,9 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image } from 'react-native';
 
-const adminImg = require('../../img/admin.jpg');
-const userImg = require('../../img/user.jpg');
-
 const UserTypeLoginView = (props) => {
 
     const userTypeStyle = StyleSheet.create({
@@ -44,7 +41,7 @@ const MainScreen = ({ route, navigation }) => {
                     onPress={() => navigation.navigate('LoginScreen', {
                         userType: 'admin',
                     })}
-                    image={adminImg}
+                    image={require('../../img/admin.jpg')}
                     buttonStyle={styles.adminButton}
                     textStyle={styles.adminText}
                     userType={admin}
@@ -53,7 +50,7 @@ const MainScreen = ({ route, navigation }) => {
                     onPress={() => navigation.navigate('LoginScreen', {
                         userType: 'user',
                     })}
-                    image={userImg}
+                    image={require('../../img/user.jpg')}
                     buttonStyle={styles.userButton}
                     textStyle={styles.userText}
                     userType={user}

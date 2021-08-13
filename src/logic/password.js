@@ -1,7 +1,7 @@
 const MIN_LENGTH = 6;
 const UPPER_CASE_REGEX = /[A-Z]/;
 const INTEGER_REGEX = /\d+/i;
-const SYMBOL_REGEX = /[$-/:-?{-~!"^_`\[\]]/i;
+const SYMBOL_REGEX = /[$-/:-?{-~!"^_`[\]]/i;
 
 export const checkPasswordMinLength = (password) => {
     return password.length >= MIN_LENGTH;

@@ -1,6 +1,6 @@
 const MIN_LENGTH = 6;
 
-import {userNameTaken} from './tempUserList'
+import {userNameTaken} from './tempUserList';
 
 const WHITESPACE_REGEX = /\s/i;
 

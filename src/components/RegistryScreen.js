@@ -5,6 +5,7 @@ import {validateEmail} from '../logic/email';
 import {validateUsername} from '../logic/userName';
 import {validateIdentityCard} from '../logic/identityCard';
 import {validatePassword} from '../logic/password';
+import {addUser} from '../logic/tempUserList';
 
 import { ADMIN, USER } from '../../App';
 
@@ -19,6 +20,7 @@ const RegistryTextInput = (props) => {
                 autoCorrect={false}
                 style={styles.inputBox}
                 placeholder={props.placeholder}
+                keyboardType={props.keyboardType}
                 onChangeText={(text) => {
                     props.setInput(text);
                     props.setInputMessage(props.validationFunction(text));
@@ -87,6 +89,7 @@ const RegistryScreen = ({ navigation }) => {
         stringIsEmpty(userNameMessage) &&
         stringIsEmpty(passwordMessage) &&
         stringIsEmpty(confirmPasswordMessage)) {
+            addUser(userName, password, identityCard, email);
             navigation.navigate('LoginScreen');
         }
     };
@@ -128,6 +131,7 @@ const RegistryScreen = ({ navigation }) => {
                     inputMessage={userNameMessage}
                     setInputMessage={setUserNameMessage}
                     secureTextEntry={false}
+                    keyboardType="default"
                 />
                 <RegistryTextInput
                     propsRef={emailInput}
@@ -140,6 +144,7 @@ const RegistryScreen = ({ navigation }) => {
                     inputMessage={emailMessage}
                     setInputMessage={setEmailMessage}
                     secureTextEntry={false}
+                    keyboardType="email-address"
                 />
                 <RegistryTextInput
                     propsRef={identityCardInput}
@@ -152,6 +157,7 @@ const RegistryScreen = ({ navigation }) => {
                     inputMessage={identityCardMessage}
                     setInputMessage={setIdentityCardMessage}
                     secureTextEntry={false}
+                    keyboardType="numeric"
                 />
                 <RegistryTextInput
                     propsRef={passwordInput}
@@ -164,6 +170,7 @@ const RegistryScreen = ({ navigation }) => {
                     inputMessage={passwordMessage}
                     setInputMessage={setPasswordMessage}
                     secureTextEntry={true}
+                    keyboardType="default"
                 />
                 <ConfirmPasswordTextInput
                     propsRef={confirmPasswordInput}

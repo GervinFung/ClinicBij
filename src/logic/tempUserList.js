@@ -4,7 +4,7 @@ const userList = [
     {userName: 'KohRongSoon123!@#', password: 'KohRongSoon123!@#'},
     {userName: 'WongYeeJing123!@#', password: 'WongYeeJing123!@#'},
     {userName: 'GervinFungDaXuen123!@#', password: 'GervinFungDaXuen123!@#'},
-    {userName: '123', password: '123'}
+    {userName: '1', password: '1'},
 ];
 
 export const getUserFromUserList = (userName, password) => {
@@ -17,4 +17,14 @@ export const userNameTaken = (userName) => {
     return userList.find((user) => {
         return user.userName === userName;
     }) !== undefined;
+};
+
+export const addUser = (userName, password, identityCard, email) => {
+    const newUser = {
+        userName: userName,
+        password: password,
+        identityCard: identityCard,
+        email: email,
+    };
+    userList.push(newUser);
 };

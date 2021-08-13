@@ -12,7 +12,7 @@
 
     --high-emphases-text-color: #ffffffe3;
     --medium-emphases-text-color: #ffffff99;
-    --disabled-text-color: #ffffff61;
+    --disabled-text-color: rgba(255, 255, 255, 0.38);
 
     --contact-background:#121212;
     --contact-input-border:#37383B;

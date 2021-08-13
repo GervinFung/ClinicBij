@@ -25,7 +25,9 @@ const LoginScreen = ({ route, navigation }) => {
         } else {
             setUser(userFound);
             setInputInvalid(false);
-            navigation.navigate('RegistryScreen');
+            navigation.navigate('HomeScreen', {
+                user: userFound,
+            });
         }
     };
 
