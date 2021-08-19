@@ -10,7 +10,7 @@ describe('test valid email', () => {
         ['gervinfungdaxuen@yahoo.com', true],
         ['ngkheelong@1.com', true],
         ['apple12345@edu.my', true],
-    ]).it("when the valid email is %s", (email, expected) => {
+    ]).it('when the valid email is %s', (email, expected) => {
         expect(checkEmailValid(email)).toBe(expected);
     });
 });

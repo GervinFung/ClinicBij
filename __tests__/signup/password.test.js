@@ -12,7 +12,7 @@ describe('test password minimum length', () => {
         ['!@#$%123ac', true],
         ['!@#$%^', true],
         ['!@#$%', false],
-    ]).it("when the password is %s", (password, expected) => {
+    ]).it('when the password is %s', (password, expected) => {
         expect(checkPasswordMinLength(password)).toBe(expected);
     });
 });

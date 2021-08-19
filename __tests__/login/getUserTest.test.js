@@ -4,17 +4,17 @@ import {getUserFromUserList} from '../../src/logic/tempUserList';
 
 describe('test user exists in user list', () => {
     each([
-        ['TayMingLiang123!@#', 'TayMingLiang123!@#'],
-        ['NgKheeLong123!@#', 'NgKheeLong123!@#'],
-        ['KohRongSoon123!@#', 'KohRongSoon123!@#'],
-        ['WongYeeJing123!@#', 'WongYeeJing123!@#'],
-        ['GervinFungDaXuen123!@#', 'GervinFungDaXuen123!@#'],
-    ]).it("when the password is %s", (userName, password) => {
-        expected = {
-            userName: userName,
+        ['TayMingLiang123@gmail.com','TayMingLiang123!@#'],
+        ['NgKheeLong123!@gmail.com', 'NgKheeLong123!@#'],
+        ['KohRongSoon123!@gmail.com', 'KohRongSoon123!@#'],
+        ['WongYeeJing123!@gmail.com', 'WongYeeJing123!@#'],
+        ['GervinFungDaXuen123!@gmail.com', 'GervinFungDaXuen123!@#'],
+    ]).it('when the password is %s', (email, password) => {
+        const expected = {
+            email: email,
             password: password
         }
-        expect(getUserFromUserList(userName, password)).toMatchObject(expected);
+        expect(getUserFromUserList(email, password)).toMatchObject(expected);
     });
 });
 
@@ -26,7 +26,7 @@ describe('test user does not exists in user list', () => {
         ['KohRongSoon123', 'KohRongSoon123'],
         ['WongYeeJing', 'WongYeeJing123!@#'],
         ['GervinFungDaXuen123!@#', 'GervinFungDaXuen123'],
-    ]).it("when the password is %s", (userName, password) => {
-        expect(getUserFromUserList(userName, password)).toBe(undefined);
+    ]).it('when the password is %s', (email, password) => {
+        expect(getUserFromUserList(email, password)).toBe(undefined);
     });
 });

@@ -8,7 +8,7 @@ describe('test valid identity card', () => {
         ['123456-00-1234', true],
         ['180165-12-1233', true],
         ['220904-98-0232', true],
-    ]).it("when the valid identity card is %s", (email, expected) => {
+    ]).it('when the valid identity card is %s', (email, expected) => {
         expect(checkIdentityCardValid(email)).toBe(expected);
     });
 });
@@ -16,6 +16,8 @@ describe('test valid identity card', () => {
 describe('test invalid identity card', () => {
     each([
         ['', false],
+        ['12123456-12-0987', false],
+        ['12123456-12-0987123123', false],
         ['123456-120987', false],
         ['12345600-1234', false],
         ['180165121233', false],

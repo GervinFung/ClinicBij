@@ -1,3 +1,3 @@
-export const checkInputNullOrUndefined = (password) => {
-    return password === null || undefined === password;
+export const checkInputNullOrUndefined = (input) => {
+    return input === null || undefined === input;
 };

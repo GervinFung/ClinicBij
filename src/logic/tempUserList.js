@@ -1,27 +1,27 @@
 const userList = [
-    {userName: 'TayMingLiang123!@#', password: 'TayMingLiang123!@#'},
-    {userName: 'NgKheeLong123!@#', password: 'NgKheeLong123!@#'},
-    {userName: 'KohRongSoon123!@#', password: 'KohRongSoon123!@#'},
-    {userName: 'WongYeeJing123!@#', password: 'WongYeeJing123!@#'},
-    {userName: 'GervinFungDaXuen123!@#', password: 'GervinFungDaXuen123!@#'},
-    {userName: '1', password: '1'},
+    {email: 'TayMingLiang123@gmail.com', password: 'TayMingLiang123!@#'},
+    {email: 'NgKheeLong123!@gmail.com', password: 'NgKheeLong123!@#'},
+    {email: 'KohRongSoon123!@gmail.com', password: 'KohRongSoon123!@#'},
+    {email: 'WongYeeJing123!@gmail.com', password: 'WongYeeJing123!@#'},
+    {email: 'GervinFungDaXuen123!@gmail.com', password: 'GervinFungDaXuen123!@#'},
+    {email: '1', password: '1'},
 ];
 
-export const getUserFromUserList = (userName, password) => {
+export const getUserFromUserList = (email, password) => {
     return userList.find((user) => {
-        return user.userName === userName && user.password === password;
+        return user.email === email && user.password === password;
     });
 };
 
-export const userNameTaken = (userName) => {
+export const emailTaken = (email) => {
     return userList.find((user) => {
-        return user.userName === userName;
+        return user.email === email;
     }) !== undefined;
 };
 
-export const addUser = (userName, password, identityCard, email) => {
+export const addUser = (fullName, password, identityCard, email) => {
     const newUser = {
-        userName: userName,
+        fullName: fullName,
         password: password,
         identityCard: identityCard,
         email: email,
