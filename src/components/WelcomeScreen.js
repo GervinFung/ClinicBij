@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image } from 'react-native';
 import { ADMIN, USER } from '../../App';
+import auth from '@react-native-firebase/auth';
 
 const WelcomeScreen = ({ navigation }) => {
-
+    
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.generalView}><Text style={styles.title}>Welcome to MySejahtera</Text></View>

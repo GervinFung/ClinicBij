@@ -4,7 +4,7 @@ export const checkUsernameMinLength = (fullName) => {
     return fullName.length >= MIN_LENGTH;
 };
 
-export const validateUsername = (fullName) => {
+export const validateFullname = (fullName) => {
     if (!checkUsernameMinLength(fullName)) {
         return 'Username cannot have less than 3 characters';
     }
