@@ -9,6 +9,7 @@ import LoginScreen from './src/components/LoginScreen';
 import RegistryScreen from './src/components/RegistryScreen';
 import MainScreen from './src/components/MainScreen';
 import HomeScreen from './src/components/HomeScreen';
+import ProfileScreen from './src/components/ProfileScreen';
 
 import CreateAppointmentScreen from './src/components/appointment/CreateAppointment';
 import ReadAppointmentScreen from './src/components/appointment/ReadAppointment';
@@ -16,10 +17,12 @@ import UpdateAppointmentScreen from './src/components/appointment/UpdateAppointm
 import DeleteAppointmentScreen from './src/components/appointment/DeleteAppointment';
 
 import UpdateDecisionScreen from './src/components/appointment/update/UpdateDecision';
-
 import UpdatePurposeScreen from './src/components/appointment/update/UpdatePurpose';
 import UpdateDateTimeScreen from './src/components/appointment/update/UpdateDateTime';
 import UpdateDoctorScreen from './src/components/appointment/update/UpdateDoctor';
+
+import auth from '@react-native-firebase/auth';
+import { useState } from 'react/cjs/react.production.min';
 
 const WelcomeStackNav = () => {
     const Stack = createStackNavigator();
@@ -50,13 +53,14 @@ const BottomNav = () => {
     return (
         <Tab.Navigator>
             <Tab.Screen name={'Welcome'} component={WelcomeStackNav} options={{ headerShown: false }}/>
+            <Tab.Screen name={'Profile'} component={ProfileScreen} options={{ headerShown: false }}/>
         </Tab.Navigator>
     );
 };
 
 const DrawerNav = () => {
     const Drawer = createDrawerNavigator();
-
+    
     return (
         <Drawer.Navigator initialRouteName="MySejahtera">
             <Drawer.Screen name={'MySejahtera'} component={BottomNav} options={{ headerShown: false }}/>

@@ -1,41 +1,57 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity, KeyboardAvoidingView, Image } from 'react-native';
 import {getUserFromUserList} from '../logic/tempUserList';
-
+import auth from '@react-native-firebase/auth';
 import { ADMIN, USER } from '../../App';
 
 const LoginScreen = ({ route, navigation }) => {
 
     const { userType } = route.params;
 
-    const [userName, setUserName] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [inputInvalid, setInputInvalid] = useState(false);
     const [user, setUser] = useState({});
     // maybe user can use props, pass down to another components
 
-    const userNameInput = useRef(TextInput);
+    const emailInput = useRef(TextInput);
     const passwordInput = useRef(TextInput);
     const loginButton = useRef(TouchableOpacity);
 
+    useEffect(() => {   
+            setUser(auth().currentUser);                
+    }, []);
+
     const loginButtonPressed = () => {
-        const userFound = getUserFromUserList(userName, password);
-        if (userFound === undefined) {
-            setInputInvalid(true);
-        } else {
-            setUser(userFound);
-            setInputInvalid(false);
+        auth().signInWithEmailAndPassword(email, password)
+        .then(() => {
+            alert('Welcome!')
+            setUser(auth().currentUser);
             navigation.navigate('HomeScreen', {
-                user: userFound,
-            });
-        }
+                user: {email: 'NgKheeLong123!@gmail.com', password: 'NgKheeLong123!@#'},
+            });       
+        })
+        .catch(error => {
+            if (error.code === 'auth/invalid-email') {
+                console.log('Invalid email entered! Please try again.');
+            }
+            if(error.code === 'auth/user-not-found') {
+                console.log('Invalid email/password entered! Please try again.');
+            }
+            if(error.code === 'auth/wrong-password') {
+                console.log('Invalid password entered! Please try again.');
+            }
+           
+            console.error(error);
+        });
+        
     };
 
     const showInputInvalidText = () => {
         if (inputInvalid) {
             return (
                 <View style={styles.inputInvalid}>
-                    <Text style={styles.inputInvalidText}>Invalid username/password</Text>
+                    <Text style={styles.inputInvalidText}>Invalid email/password</Text>
                     <Text style={styles.inputInvalidText}>Please try again</Text>
                 </View>
             );
@@ -59,10 +75,10 @@ const LoginScreen = ({ route, navigation }) => {
             </View>
             <View style={[styles.generalView, styles.inputView]}>
                 <TextInput
-                    ref={userNameInput}
+                    ref={emailInput}
                     style={styles.inputBox}
-                    placeholder="Username"
-                    onChangeText={(text) => setUserName(text)}
+                    placeholder="Email"
+                    onChangeText={(text) => setEmail(text)}
                     onSubmitEditing={() => passwordInput.current.focus()}
                 />
                 <TextInput

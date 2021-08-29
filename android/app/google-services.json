@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "115152145780",
+    "project_id": "medical-appointment-syst-58f8b",
+    "storage_bucket": "medical-appointment-syst-58f8b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115152145780:android:8b4c8fcbb5a1aedba03021",
+        "android_client_info": {
+          "package_name": "com.asm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "115152145780-cms1nt2o4b1h0se6phuo7tipns1pt2qp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuEz2lUMmCCokKmMWFTKD6gW5CAG6JcBQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "115152145780-cms1nt2o4b1h0se6phuo7tipns1pt2qp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

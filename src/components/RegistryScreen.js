@@ -1,12 +1,12 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState} from 'react';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
-
+import { checkInputNullOrUndefined } from '../logic/nullOrUndefinedInput';
 import {validateEmail} from '../logic/email';
-import {validateUsername} from '../logic/userName';
+import {validateFullname} from '../logic/fullName';
 import {validateIdentityCard} from '../logic/identityCard';
 import {validatePassword} from '../logic/password';
 import {addUser} from '../logic/tempUserList';
-
+import auth from '@react-native-firebase/auth';
 import { ADMIN, USER } from '../../App';
 
 const RegistryTextInput = (props) => {
@@ -14,6 +14,7 @@ const RegistryTextInput = (props) => {
     return (
         <View style={styles.generalView}>
             <TextInput
+                value={props.value}
                 ref={props.propsRef}
                 secureTextEntry={props.secureTextEntry}
                 autoCapitalize="none"
@@ -26,6 +27,9 @@ const RegistryTextInput = (props) => {
                     props.setInputMessage(props.validationFunction(text));
                 }}
                 onSubmitEditing={() => {
+                    if (checkInputNullOrUndefined(props.value) || props.nextRef.focus === undefined){
+                        return;
+                    }
                     props.nextRef.focus();
                 }}
                 onEndEditing={() => {
@@ -71,8 +75,8 @@ const RegistryScreen = ({ navigation }) => {
     const [identityCard, setIdentityCard] = useState('');
     const [identityCardMessage, setIdentityCardMessage] = useState('');
 
-    const [userName, setUserName] = useState('');
-    const [userNameMessage, setUserNameMessage] = useState('');
+    const [fullName, setFullName] = useState('');
+    const [fullNameMessage, setFullNameMessage] = useState('');
 
     const [password, setPassword] = useState('');
     const [passwordMessage, setPasswordMessage] = useState('');
@@ -83,14 +87,33 @@ const RegistryScreen = ({ navigation }) => {
         return message.length === 0;
     };
 
+    const signUp = () => {
+        auth()
+        .createUserWithEmailAndPassword('jane.doe@example.com', 'SuperSecretPassword!')
+        .then(() => {
+            navigation.navigate('LoginScreen', {
+                userType: 'user',
+            })
+        })
+        .catch(error => {
+            if (error.code === 'auth/email-already-in-use') {
+                console.log('That email address is already exist!');
+            }
+            if (error.code === 'auth/invalid-email') {
+                console.log('That email address is invalid!');
+            }
+            console.error(error);
+        });
+    }
+
     const signupButtonPressed = () => {
         if (stringIsEmpty(emailMessage) &&
         stringIsEmpty(identityCardMessage) &&
-        stringIsEmpty(userNameMessage) &&
+        stringIsEmpty(fullNameMessage) &&
         stringIsEmpty(passwordMessage) &&
         stringIsEmpty(confirmPasswordMessage)) {
-            addUser(userName, password, identityCard, email);
-            navigation.navigate('LoginScreen');
+            addUser(fullName, password, identityCard, email);
+            signUp();
         }
     };
 
@@ -109,7 +132,7 @@ const RegistryScreen = ({ navigation }) => {
         return 'Both passwords are not the same';
     };
 
-    const userNameInput = useRef(TextInput);
+    const fullNameInput = useRef(TextInput);
     const emailInput = useRef(TextInput);
     const identityCardInput = useRef(TextInput);
     const passwordInput = useRef(TextInput);
@@ -121,19 +144,21 @@ const RegistryScreen = ({ navigation }) => {
             <View style={styles.generalView}><Text style={styles.title}>Sign Up</Text></View>
             <View style={[styles.generalView, styles.inputView]}>
                 <RegistryTextInput
-                    propsRef={userNameInput}
+                    value={fullName}
+                    propsRef={fullNameInput}
                     nextRef={emailInput.current}
                     showInputInvalid={showInputInvalid}
-                    placeholder={'Username'}
-                    validationFunction={validateUsername}
-                    input={userName}
-                    setInput={setUserName}
-                    inputMessage={userNameMessage}
-                    setInputMessage={setUserNameMessage}
+                    placeholder={'Fullname'}
+                    validationFunction={validateFullname}
+                    input={fullName}
+                    setInput={setFullName}
+                    inputMessage={fullNameMessage}
+                    setInputMessage={setFullNameMessage}
                     secureTextEntry={false}
                     keyboardType="default"
                 />
                 <RegistryTextInput
+                    value={email}
                     propsRef={emailInput}
                     nextRef={identityCardInput.current}
                     showInputInvalid={showInputInvalid}
@@ -147,6 +172,7 @@ const RegistryScreen = ({ navigation }) => {
                     keyboardType="email-address"
                 />
                 <RegistryTextInput
+                    value={identityCard}
                     propsRef={identityCardInput}
                     nextRef={passwordInput.current}
                     showInputInvalid={showInputInvalid}
@@ -160,6 +186,7 @@ const RegistryScreen = ({ navigation }) => {
                     keyboardType="numeric"
                 />
                 <RegistryTextInput
+                    value={password}
                     propsRef={passwordInput}
                     nextRef={confirmPasswordInput.current}
                     showInputInvalid={showInputInvalid}
