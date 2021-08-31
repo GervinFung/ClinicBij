@@ -8,12 +8,12 @@ describe('test user exists in user list', () => {
         ['NgKheeLong123!@gmail.com', 'NgKheeLong123!@#'],
         ['KohRongSoon123!@gmail.com', 'KohRongSoon123!@#'],
         ['WongYeeJing123!@gmail.com', 'WongYeeJing123!@#'],
-        ['GervinFungDaXuen123!@gmail.com', 'GervinFungDaXuen123!@#'],
+        ['gervinfungdaxuen@gmail.com', '123456A$'],
     ]).it('when the password is %s', (email, password) => {
         const expected = {
             email: email,
-            password: password
-        }
+            password: password,
+        };
         expect(getUserFromUserList(email, password)).toMatchObject(expected);
     });
 });

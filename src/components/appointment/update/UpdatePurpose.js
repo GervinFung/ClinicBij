@@ -1,9 +1,10 @@
-import React, { useState, useRef } from 'react';
-import { StyleSheet, Text, TextInput, View, TouchableOpacity, KeyboardAvoidingView, Image, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TextInput, View, KeyboardAvoidingView, Image, Alert } from 'react-native';
 
 import {updatePurposeOfAppointment} from '../../../logic/tempAppointmentList';
+import TouchableButton, {buttonStyleDict} from '../../reusable/TouchableButton';
 
-const PurposeTextView = (props) => {
+const PurposeTextView = ({type, purpose}) => {
 
     const purposeStyle = StyleSheet.create({
         currentPurposeView: {
@@ -21,8 +22,8 @@ const PurposeTextView = (props) => {
 
     return (
         <View style={purposeStyle.currentPurposeView}>
-            <Text style={styles.purpose}>Your {props.type} purpose of appointment</Text>
-            <Text style={[styles.purpose, purposeStyle.boldText]}>{props.purpose}</Text>
+            <Text style={styles.purpose}>Your {type} purpose of appointment</Text>
+            <Text style={[styles.purpose, purposeStyle.boldText]}>{purpose}</Text>
         </View>
     );
 };
@@ -32,8 +33,6 @@ const UpdatePurposeScreen = ({ route, navigation }) => {
     const { purpose, id } = route.params;
 
     const [newPurpose, setNewPurpose] = useState('');
-
-    const updateButton = useRef(TouchableOpacity);
 
     const confirmUpdatePurpose =  () => {
 
@@ -67,22 +66,17 @@ const UpdatePurposeScreen = ({ route, navigation }) => {
                     placeholder="Purpose of Appointment"
                     keyboardType="ascii-capable"
                     onChangeText={setNewPurpose}
-                    onSubmitEditing={() => updateButton.current.focus()}
                 />
                 <PurposeTextView
                     type="new"
                     purpose={newPurpose}
                 />
             </View>
-            <View style={styles.generalView}>
-                <TouchableOpacity
-                    ref={updateButton}
-                    style={styles.confirmButton}
-                    onPress={confirmUpdatePurpose}
-                >
-                    <Text style={styles.confirmText}>Update Appointment</Text>
-                </TouchableOpacity>
-            </View>
+            <TouchableButton
+                onPress={confirmUpdatePurpose}
+                text="Update Appointment"
+                buttonStyle={buttonStyleDict.GREEN}
+            />
         </KeyboardAvoidingView>
     );
 };
@@ -113,22 +107,6 @@ const styles = StyleSheet.create({
     },
     text: {
         textAlign: 'center',
-    },
-    confirmButton: {
-        backgroundColor: '#059862',
-        width: '80%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingBottom: 10,
-        paddingTop: 10,
-        paddingLeft: 10,
-        paddingRight: 10,
-        borderRadius: 15,
-        margin: 5,
-    },
-    confirmText: {
-        color: '#FFFFFFE3',
-        fontSize: 17,
     },
     inputBox: {
         // backgroundColor: '#121212',

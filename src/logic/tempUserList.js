@@ -1,15 +1,21 @@
 const userList = [
-    {email: 'TayMingLiang123@gmail.com', password: 'TayMingLiang123!@#'},
-    {email: 'NgKheeLong123!@gmail.com', password: 'NgKheeLong123!@#'},
-    {email: 'KohRongSoon123!@gmail.com', password: 'KohRongSoon123!@#'},
-    {email: 'WongYeeJing123!@gmail.com', password: 'WongYeeJing123!@#'},
-    {email: 'GervinFungDaXuen123!@gmail.com', password: 'GervinFungDaXuen123!@#'},
-    {email: '1', password: '1'},
+    {email: 'jane.doe@example.com', password: 'SuperSecretPassword!', fullName: 'Jane Doe', uuid: 'vRuUbKBKWZV6F360zRrNwEWCuoF3'},
+    {email: 'TayMingLiang123@gmail.com', password: 'TayMingLiang123!@#', fullName: 'Tay Ming Liang'},
+    {email: 'NgKheeLong123!@gmail.com', password: 'NgKheeLong123!@#', fullName: 'Ng Khee Long'},
+    {email: 'KohRongSoon123!@gmail.com', password: 'KohRongSoon123!@#', fullName: 'Koh Rong Soon'},
+    {email: 'WongYeeJing123!@gmail.com', password: 'WongYeeJing123!@#', fullName: 'Wong Yee Jing'},
+    {email: 'gervinfungdaxuen@gmail.com', password: '123456A$', fullName: 'Gervin', uuid: 'YxwIkQ72lHf6KV62JDbfFE5tZBp2'},
 ];
 
 export const getUserFromUserList = (email, password) => {
     return userList.find((user) => {
         return user.email === email && user.password === password;
+    });
+};
+
+export const getUserFromUserListUUID = (uuid) => {
+    return userList.find((user) => {
+        return user.uuid === uuid;
     });
 };
 

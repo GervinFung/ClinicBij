@@ -1,86 +1,9 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity, Image, Alert } from 'react-native';
-
-import {isDoneStatus, isPendingStatus, isCancelledStatus, getPendingAppointmentList, removeFromPendingAppointmentList} from '../../logic/tempAppointmentList';
-
-const DONE = require('../../../img/appointmentStatus/done.jpg');
-const CANCELLED = require('../../../img/appointmentStatus/cancelled.jpg');
-const PENDING = require('../../../img/appointmentStatus/pending.jpg');
-
-const AppointmentView = (props) => {
-
-    const appointmentStyles = StyleSheet.create({
-        containerView: {
-            width: '100%',
-            padding: 10,
-        },
-        spaceBetweenView: {
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-            justifyContent: 'space-between',
-        },
-        importantText: {
-            fontSize: 18,
-            fontWeight: 'bold',
-        },
-        text: {
-            fontSize: 17,
-        },
-        statusText: {
-            fontStyle: 'italic',
-        },
-        image: {
-            width: 50,
-            height: 50,
-        },
-        centerView: {
-            justifyContent: 'center',
-        },
-    });
-
-    const getStatusImage = () => {
-        if (isDoneStatus(props.status)) {
-            return DONE;
-        } else if (isCancelledStatus(props.status)) {
-            return CANCELLED;
-        } else if (isPendingStatus(props.status)) {
-            return PENDING;
-        }
-        throw new Error('Status should be either DONE, CANCELLED or PENDING');
-    };
-
-    return (
-        <TouchableOpacity
-            key={props.index}
-            style={appointmentStyles.containerView}
-            onShowUnderlay={props.onShowUnderlay}
-            onHideUnderlay={props.onHideUnderlay}
-            onPress={props.onPress}
-        >
-            <View>
-                <View style={appointmentStyles.spaceBetweenView}>
-                    <View><Text style={appointmentStyles.importantText}>Appointment {props.index}</Text></View>
-                    <View><Text style={appointmentStyles.importantText}>{props.date}</Text></View>
-                </View>
-                <View style={appointmentStyles.spaceBetweenView}>
-                    <View style={appointmentStyles.centerView}>
-                        <Text style={appointmentStyles.text}>{props.doctor}</Text>
-                        <Text style={appointmentStyles.text}>{props.purpose}</Text>
-                        <Text style={appointmentStyles.text}>{props.time}</Text>
-                        <Text style={appointmentStyles.text}>Status: <Text style={appointmentStyles.statusText}>{props.status.toUpperCase()}</Text></Text>
-                    </View>
-                    <View style={appointmentStyles.centerView}>
-                        <Image source={getStatusImage()} style={appointmentStyles.image}/>
-                    </View>
-                </View>
-            </View>
-        </TouchableOpacity>
-    );
-};
+import { StyleSheet, Text, View, SafeAreaView, FlatList, Image, Alert } from 'react-native';
+import {getPendingAppointmentList, removeFromPendingAppointmentList} from '../../logic/tempAppointmentList';
+import {TouchableAppointmentView} from '../reusable/AppointmentView';
 
 const DeleteAppointmentScreen = ({ route, navigation }) => {
-
-    // const { user } = route.params;
 
     const [appointmentList, setAppointmentList] = useState(getPendingAppointmentList());
 
@@ -89,7 +12,10 @@ const DeleteAppointmentScreen = ({ route, navigation }) => {
             `Cancel Appointment ${id} Confirmation`, 'This action cannot be undone', [{
                     text: 'Cancel', style: 'cancel',
                 }, {
-                    text: 'OK', onPress: () => setAppointmentList(removeFromPendingAppointmentList(id)),
+                    text: 'OK', onPress: () => {
+                        setAppointmentList(removeFromPendingAppointmentList(id));
+                        navigation.navigate('ReadAppointmentScreen');
+                    },
                 },
             ]
         );
@@ -105,7 +31,7 @@ const DeleteAppointmentScreen = ({ route, navigation }) => {
             <FlatList
                 data={appointmentList}
                 renderItem={({ item: appointment, separators }) => (
-                    <AppointmentView
+                    <TouchableAppointmentView
                         index={appointment.id}
                         onShowUnderlay={separators.highlight}
                         onHideUnderlay={separators.unhighlight}

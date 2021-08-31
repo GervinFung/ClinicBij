@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator  } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -9,7 +9,10 @@ import LoginScreen from './src/components/LoginScreen';
 import RegistryScreen from './src/components/RegistryScreen';
 import MainScreen from './src/components/MainScreen';
 import HomeScreen from './src/components/HomeScreen';
-import ProfileScreen from './src/components/ProfileScreen';
+
+import ProfileScreen from './src/components/profile/ProfileScreen';
+import UpdateProfileScreen from './src/components/profile/UpdateProfileScreen';
+import DeleteProfileScreen from './src/components/profile/DeleteProfileScreen';
 
 import CreateAppointmentScreen from './src/components/appointment/CreateAppointment';
 import ReadAppointmentScreen from './src/components/appointment/ReadAppointment';
@@ -21,14 +24,24 @@ import UpdatePurposeScreen from './src/components/appointment/update/UpdatePurpo
 import UpdateDateTimeScreen from './src/components/appointment/update/UpdateDateTime';
 import UpdateDoctorScreen from './src/components/appointment/update/UpdateDoctor';
 
-import auth from '@react-native-firebase/auth';
-import { useState } from 'react/cjs/react.production.min';
+import {hasCurrentUser, getAuth} from './src/components/util/UserUtil';
 
 const WelcomeStackNav = () => {
+
+    const getFirstRoute = (hasUser) => {
+        return hasUser ? 'HomeScreen' : 'WelcomeScreen';
+    };
+
     const Stack = createStackNavigator();
 
+    const [firstRoute, setFirstRoute] = useState(getFirstRoute(hasCurrentUser()));
+
+    useEffect(() => getAuth().onAuthStateChanged((user) => {
+        setFirstRoute(getFirstRoute(user !== null));
+    }), []);
+
     return (
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName={firstRoute}>
             <Stack.Screen name={'WelcomeScreen'} component={WelcomeScreen} options={{ title: 'Welcome' }}/>
             <Stack.Screen name={'MainScreen'} component={MainScreen} options={{ title: 'Main' }}/>
             <Stack.Screen name={'LoginScreen'} component={LoginScreen} options={{ title: 'Login' }}/>
@@ -47,24 +60,56 @@ const WelcomeStackNav = () => {
     );
 };
 
-const BottomNav = () => {
-    const Tab = createBottomTabNavigator();
+const ProfileStackNav = () => {
+    const Stack = createStackNavigator();
 
     return (
-        <Tab.Navigator>
-            <Tab.Screen name={'Welcome'} component={WelcomeStackNav} options={{ headerShown: false }}/>
-            <Tab.Screen name={'Profile'} component={ProfileScreen} options={{ headerShown: false }}/>
-        </Tab.Navigator>
+        <Stack.Navigator>
+            <Stack.Screen name={'ProfileScreen'} component={ProfileScreen} options={{ title: 'Profile' }}/>
+            <Stack.Screen name={'UpdateProfileScreen'} component={UpdateProfileScreen} options={{ title: 'Update' }}/>
+            <Stack.Screen name={'DeleteProfileScreen'} component={DeleteProfileScreen} options={{ title: 'Delete' }}/>
+        </Stack.Navigator>
     );
 };
 
 const DrawerNav = () => {
     const Drawer = createDrawerNavigator();
-    
+
     return (
-        <Drawer.Navigator initialRouteName="MySejahtera">
-            <Drawer.Screen name={'MySejahtera'} component={BottomNav} options={{ headerShown: false }}/>
+        <Drawer.Navigator>
+            <Drawer.Screen name={'MySejahtera'} component={WelcomeStackNav} options={{ headerShown: false }}/>
         </Drawer.Navigator>
+    );
+};
+
+const BottomNav = () => {
+    const Tab = createBottomTabNavigator();
+
+    const [hasUser, setHasUser] = useState(hasCurrentUser());
+
+    useEffect(() => getAuth().onAuthStateChanged((user) => {
+        setHasUser(user !== null);
+    }), []);
+
+    const bottomTab = () => {
+        if (hasUser) {
+            return (
+                <Tab.Navigator initialRouteName="DrawerNav">
+                    <Tab.Screen name={'DrawerNav'} component={DrawerNav} options={{ headerShown: false }}/>
+                    <Tab.Screen name={'Profile'} component={ProfileStackNav} options={{ headerShown: false }}/>
+                </Tab.Navigator>
+            );
+        } else {
+            return (
+                <Tab.Navigator>
+                    <Tab.Screen name={'DrawerNav'} component={DrawerNav} options={{ headerShown: false }} />
+                </Tab.Navigator>
+            );
+        }
+    };
+
+    return (
+        bottomTab()
     );
 };
 
@@ -75,7 +120,7 @@ const App = () => {
 
     return (
         <NavigationContainer>
-            <DrawerNav/>
+            <BottomNav/>
         </NavigationContainer>
     );
 };

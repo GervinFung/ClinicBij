@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image } from 'react-native';
+import TouchableButton, {buttonStyleDict} from './reusable/TouchableButton';
 
-const UserTypeLoginView = (props) => {
+const UserTypeLoginView = ({onPress, image, userType, style}) => {
 
     const userTypeStyle = StyleSheet.create({
         parentButton: {
@@ -13,18 +14,16 @@ const UserTypeLoginView = (props) => {
     return (
         <View>
             <View style={styles.generalView}>
-                <TouchableOpacity onPress={props.onPress}>
-                    <Image style={styles.image} source={props.image}/>
+                <TouchableOpacity onPress={onPress}>
+                    <Image style={styles.image} source={image}/>
                 </TouchableOpacity>
             </View>
-            <View style={userTypeStyle.parentButton}>
-                <TouchableOpacity
-                    style={props.buttonStyle}
-                    onPress={props.onPress}
-                >
-                    <Text style={props.textStyle}>{props.userType.toUpperCase()}</Text>
-                </TouchableOpacity>
-            </View>
+            <TouchableButton
+                viewStyle={userTypeStyle.parentButton}
+                onPress={onPress}
+                text={userType}
+                buttonStyle={style}
+            />
         </View>
     );
 };
@@ -42,8 +41,7 @@ const MainScreen = ({ route, navigation }) => {
                         userType: 'admin',
                     })}
                     image={require('../../img/admin.jpg')}
-                    buttonStyle={styles.adminButton}
-                    textStyle={styles.adminText}
+                    style={buttonStyleDict.WHITE}
                     userType={admin}
                 />
                 <UserTypeLoginView
@@ -51,8 +49,7 @@ const MainScreen = ({ route, navigation }) => {
                         userType: 'user',
                     })}
                     image={require('../../img/user.jpg')}
-                    buttonStyle={styles.userButton}
-                    textStyle={styles.userText}
+                    style={buttonStyleDict.GREEN}
                     userType={user}
                 />
             </View>
@@ -84,48 +81,6 @@ const styles = StyleSheet.create({
         width: 165,
         height: 165,
         resizeMode: 'contain',
-    },
-    userButton: {
-        backgroundColor: '#059862',
-        width: '80%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingBottom: 10,
-        paddingTop: 10,
-        paddingLeft: 10,
-        paddingRight: 10,
-        borderRadius: 15,
-        margin: 5,
-    },
-    userText: {
-        color: '#FFFFFFE3',
-        fontSize: 17,
-    },
-    adminButton: {
-        //iOS
-        shadowColor: 'rgba(0,0,0,0.4)',
-        shadowOffset: { height: 1, width: 1 },
-        shadowOpacity: 1,
-        shadowRadius: 1,
-        //iOS
-        //android
-        elevation: 2,
-        //android
-        backgroundColor: '#FFF',
-        width: '80%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingBottom: 10,
-        paddingTop: 10,
-        paddingLeft: 10,
-        paddingRight: 10,
-        borderRadius: 15,
-        margin: 5,
-    },
-    adminText: {
-        backgroundColor: 'transparent',
-        color: '#059862',
-        fontSize: 17,
     },
 });
 

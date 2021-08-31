@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Alert, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, Alert, SafeAreaView } from 'react-native';
 
 import CalendarPicker from 'react-native-calendar-picker';
 import {Picker} from '@react-native-picker/picker';
 
 import {updateDateTimeOfAppointment} from '../../../logic/tempAppointmentList';
 import {getAvailableDoctor} from '../../../logic/tempDoctorList';
+import TouchableButton, {buttonStyleDict} from '../../reusable/TouchableButton';
 
-const ChooseAppointmentView = (props) => {
+const ChooseAppointmentView = ({setAppointmentDate, appointmentDate}) => {
 
     const calendarStyle = StyleSheet.create({
         calendarView: {
@@ -41,7 +42,7 @@ const ChooseAppointmentView = (props) => {
     const processAppointmentDateToString = (dateChosen) => {
         const date = JSON.stringify(dateChosen).split('T')[0].replace('"', '');
         const splitted = date.split('-');
-        props.setAppointmentDate(splitted.reverse().join('/'));
+        setAppointmentDate(splitted.reverse().join('/'));
     };
 
     return (
@@ -56,13 +57,13 @@ const ChooseAppointmentView = (props) => {
                 />
             </View>
             <View style={styles.chosenText}>
-                <Text style={styles.inputTitle}><Text style={styles.chosenBold}>Date Chosen:</Text> {props.appointmentDate}</Text>
+                <Text style={styles.inputTitle}><Text style={styles.chosenBold}>Date Chosen:</Text> {appointmentDate}</Text>
             </View>
         </View>
     );
 };
 
-const NumberPickerView = (props) => {
+const NumberPickerView = ({selectedTime, setSelectedTime, timeList}) => {
 
     const pickerStyle = StyleSheet.create({
         pickerView: {
@@ -78,18 +79,18 @@ const NumberPickerView = (props) => {
         <View>
             <Picker
                 style={pickerStyle.pickerView}
-                selectedValue={props.selectedTime}
+                selectedValue={selectedTime}
                 onValueChange={(itemValue) => {
-                    props.setSelectedTime(itemValue);
+                    setSelectedTime(itemValue);
                 }}
             >
-                {props.timeList.map((time, i) => {return <Picker.Item key={i + time} value={time} label={time} />;})}
+                {timeList.map((time, i) => {return <Picker.Item key={i + time} value={time} label={time} />;})}
             </Picker>
         </View>
     );
 };
 
-const TimePickerView = (props) => {
+const TimePickerView = ({setAppointmentTime, appointmentTime}) => {
 
     const hours = ['9', '10', '11', '12', '1', '2', '3', '4', '5'];
     const minutes = ['00', '30'];
@@ -129,8 +130,8 @@ const TimePickerView = (props) => {
 
     useEffect(() => {
         // TODO - REQUIRE FIX, SO IT WONT DISPLAY DEFAULT TIME, SHOULD DISPLAY NONE WHEN USER DID NOT SELECT ANY TIME
-        props.setAppointmentTime(`${selectedHour}:${selectedMinute} ${meridiem}`);
-    }, [meridiem, props, selectedHour, selectedMinute]);
+        setAppointmentTime(`${selectedHour}:${selectedMinute} ${meridiem}`);
+    }, [meridiem, selectedHour, selectedMinute, setAppointmentTime]);
 
     return (
         <View>
@@ -155,7 +156,7 @@ const TimePickerView = (props) => {
             <View style={timePickerStyle.timeText}>
                 <Text style={styles.inputTitle}>
                     <Text style={timePickerStyle.timeBold}>Time Chosen: </Text>
-                    {props.appointmentTime}
+                    {appointmentTime}
                 </Text>
             </View>
         </View>
@@ -217,14 +218,11 @@ const UpdateDateTimeScreen = ({ route, navigation }) => {
                     />
                 </View>
                 {getNoAvailableDoctorMessage()}
-                <View style={styles.generalView}>
-                    <TouchableOpacity
-                        style={styles.confirmButton}
-                        onPress={confirmUpdateDateTime}
-                    >
-                        <Text style={styles.confirmText}>Update Appointment</Text>
-                    </TouchableOpacity>
-                </View>
+                <TouchableButton
+                    onPress={confirmUpdateDateTime}
+                    text="Update Appointment"
+                    buttonStyle={buttonStyleDict.GREEN}
+                />
             </ScrollView>
         </SafeAreaView>
     );
@@ -259,22 +257,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     inputTitle: {
-        fontSize: 17,
-    },
-    confirmButton: {
-        backgroundColor: '#059862',
-        width: '80%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingBottom: 10,
-        paddingTop: 10,
-        paddingLeft: 10,
-        paddingRight: 10,
-        borderRadius: 15,
-        margin: 5,
-    },
-    confirmText: {
-        color: '#FFFFFFE3',
         fontSize: 17,
     },
     chosenText: {

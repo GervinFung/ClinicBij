@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity, KeyboardAvoidingView, Image } from 'react-native';
-import {getUserFromUserList} from '../logic/tempUserList';
-import auth from '@react-native-firebase/auth';
 import { ADMIN, USER } from '../../App';
+import {getAuth} from './util/UserUtil';
+import TouchableButton, {buttonStyleDict} from './reusable/TouchableButton';
 
 const LoginScreen = ({ route, navigation }) => {
 
@@ -11,48 +11,35 @@ const LoginScreen = ({ route, navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [inputInvalid, setInputInvalid] = useState(false);
-    const [user, setUser] = useState({});
-    // maybe user can use props, pass down to another components
+    const [inputInvalidMsg, setInputInvalidMsg] = useState('');
 
     const emailInput = useRef(TextInput);
     const passwordInput = useRef(TextInput);
-    const loginButton = useRef(TouchableOpacity);
-
-    useEffect(() => {   
-            setUser(auth().currentUser);                
-    }, []);
 
     const loginButtonPressed = () => {
-        auth().signInWithEmailAndPassword(email, password)
-        .then(() => {
-            alert('Welcome!')
-            setUser(auth().currentUser);
-            navigation.navigate('HomeScreen', {
-                user: {email: 'NgKheeLong123!@gmail.com', password: 'NgKheeLong123!@#'},
-            });       
-        })
-        .catch(error => {
+        getAuth().signInWithEmailAndPassword(email, password).then(() => {
+            setInputInvalid(false);
+            setInputInvalidMsg('');
+            navigation.navigate('HomeScreen');
+        }).catch(error => {
+            setInputInvalid(true);
             if (error.code === 'auth/invalid-email') {
-                console.log('Invalid email entered! Please try again.');
+                setInputInvalidMsg('Invalid email entered!');
             }
-            if(error.code === 'auth/user-not-found') {
-                console.log('Invalid email/password entered! Please try again.');
+            if (error.code === 'auth/user-not-found') {
+                setInputInvalidMsg('User not found!');
             }
-            if(error.code === 'auth/wrong-password') {
-                console.log('Invalid password entered! Please try again.');
+            if (error.code === 'auth/wrong-password') {
+                setInputInvalidMsg('Invalid password entered!');
             }
-           
-            console.error(error);
         });
-        
     };
 
     const showInputInvalidText = () => {
         if (inputInvalid) {
             return (
                 <View style={styles.inputInvalid}>
-                    <Text style={styles.inputInvalidText}>Invalid email/password</Text>
-                    <Text style={styles.inputInvalidText}>Please try again</Text>
+                    <Text style={styles.inputInvalidText}>{inputInvalidMsg} Please try again</Text>
                 </View>
             );
         }
@@ -87,7 +74,6 @@ const LoginScreen = ({ route, navigation }) => {
                     style={styles.inputBox}
                     placeholder="Password"
                     onChangeText={(text) => setPassword(text)}
-                    onSubmitEditing={() => loginButton.current.focus()}
                 />
                 <View style={styles.generalView}>
                     {showInputInvalidText()}
@@ -96,16 +82,13 @@ const LoginScreen = ({ route, navigation }) => {
             <View style={[styles.generalView]}>
                 <TouchableOpacity
                     onPress={() => navigation.navigate('RegistryScreen')}
-                >
-                    <Text style={styles.signupText}>Don't have an account? Signup</Text>
+                ><Text style={styles.signupText}>Don't have an account? Signup</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                    ref={loginButton}
-                    style={styles.loginButton}
-                    onPress={() => loginButtonPressed()}
-                >
-                    <Text style={styles.loginText}>LOGIN</Text>
-                </TouchableOpacity>
+                <TouchableButton
+                    onPress={loginButtonPressed}
+                    text="Login"
+                    buttonStyle={buttonStyleDict.GREEN}
+                />
             </View>
         </KeyboardAvoidingView>
     );
@@ -160,22 +143,6 @@ const styles = StyleSheet.create({
     inputInvalidText: {
         color: '#990000',
         fontSize: 14,
-    },
-    loginButton: {
-        backgroundColor: '#059862',
-        width: '80%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingBottom: 10,
-        paddingTop: 10,
-        paddingLeft: 10,
-        paddingRight: 10,
-        borderRadius: 15,
-        margin: 5,
-    },
-    loginText: {
-        color: '#FFFFFFE3',
-        fontSize: 17,
     },
     signupText: {
         color: '#121212',

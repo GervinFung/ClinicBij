@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, KeyboardAvoidingView, Image, TextInput, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Text, View, KeyboardAvoidingView, Image, TextInput, ScrollView, Alert } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import {Picker} from '@react-native-picker/picker';
 
 import {getAvailableDoctor} from '../../logic/tempDoctorList';
 import {addToAppointmentList} from '../../logic/tempAppointmentList';
+import TouchableButton, {buttonStyleDict} from '../reusable/TouchableButton';
+import HorizontalLine from '../reusable/HorizontalLine';
 
-const ChooseAppointmentView = (props) => {
+const ChooseAppointmentView = ({setAppointmentDate, appointmentDate}) => {
 
     const calendarStyle = StyleSheet.create({
         calendarView: {
@@ -40,7 +42,7 @@ const ChooseAppointmentView = (props) => {
     const processAppointmentDateToString = (dateChosen) => {
         const date = JSON.stringify(dateChosen).split('T')[0].replace('"', '');
         const splitted = date.split('-');
-        props.setAppointmentDate(splitted.reverse().join('/'));
+        setAppointmentDate(splitted.reverse().join('/'));
     };
 
     return (
@@ -55,13 +57,13 @@ const ChooseAppointmentView = (props) => {
                 />
             </View>
             <View style={styles.chosenText}>
-                <Text style={styles.inputTitle}><Text style={styles.chosenBold}>Date Chosen:</Text> {props.appointmentDate}</Text>
+                <Text style={styles.inputTitle}><Text style={styles.chosenBold}>Date Chosen:</Text> {appointmentDate}</Text>
             </View>
         </View>
     );
 };
 
-const ChooseDoctorView = (props) => {
+const ChooseDoctorView = ({doctorList, setSelectedDoctor, selectedDoctor}) => {
 
     const doctorImageList = [require('../../../img/doctor/doctor1.jpg'), require('../../../img/doctor/doctor2.jpg'), require('../../../img/doctor/doctor3.jpg')];
 
@@ -85,8 +87,8 @@ const ChooseDoctorView = (props) => {
         },
     });
 
-    const getDoctorImage = (selectedDoctor) => {
-        const index = props.doctorList.indexOf(selectedDoctor);
+    const getDoctorImage = (itemValue) => {
+        const index = doctorList.indexOf(itemValue);
         if (index >= 0 && index <= 2) {
             return doctorImageList[index];
         }
@@ -99,22 +101,22 @@ const ChooseDoctorView = (props) => {
             <Image source={doctorImage} style={styles.image}/>
             <Picker
                 style={pickerStyle.pickerView}
-                selectedValue={props.selectedDoctor}
+                selectedValue={selectedDoctor}
                 onValueChange={(itemValue) => {
-                    props.setSelectedDoctor(itemValue);
+                    setSelectedDoctor(itemValue);
                     setDoctorImage(getDoctorImage(itemValue));
                 }}
             >
-                {props.doctorList.map((doctor, i) => {return <Picker.Item key={i + doctor} value={doctor} label={doctor} />;})}
+                {doctorList.map((doctor, i) => {return <Picker.Item key={i + doctor} value={doctor} label={doctor} />;})}
             </Picker>
             <View style={styles.chosenText}>
-                <Text style={styles.inputTitle}><Text style={styles.chosenBold}>Doctor Chosen:</Text>{props.selectedDoctor.replace('Doctor', '')}</Text>
+                <Text style={styles.inputTitle}><Text style={styles.chosenBold}>Doctor Chosen:</Text>{selectedDoctor.replace('Doctor', '')}</Text>
             </View>
         </View>
     );
 };
 
-const NumberPickerView = (props) => {
+const NumberPickerView = ({selectedTime, setSelectedTime, timeList}) => {
 
     const pickerStyle = StyleSheet.create({
         pickerView: {
@@ -130,18 +132,16 @@ const NumberPickerView = (props) => {
         <View>
             <Picker
                 style={pickerStyle.pickerView}
-                selectedValue={props.selectedTime}
-                onValueChange={(itemValue) => {
-                    props.setSelectedTime(itemValue);
-                }}
+                selectedValue={selectedTime}
+                onValueChange={(itemValue) => setSelectedTime(itemValue)}
             >
-                {props.timeList.map((time, i) => {return <Picker.Item key={i + time} value={time} label={time} />;})}
+                {timeList.map((time, i) => {return <Picker.Item key={i + time} value={time} label={time} />;})}
             </Picker>
         </View>
     );
 };
 
-const TimePickerView = (props) => {
+const TimePickerView = ({setAppointmentTime, appointmentTime}) => {
 
     const hours = ['9', '10', '11', '12', '1', '2', '3', '4', '5'];
     const minutes = ['00', '30'];
@@ -181,8 +181,8 @@ const TimePickerView = (props) => {
 
     useEffect(() => {
         // TODO - REQUIRE FIX, SO IT WONT DISPLAY DEFAULT TIME, SHOULD DISPLAY NONE WHEN USER DID NOT SELECT ANY TIME
-        props.setAppointmentTime(`${selectedHour}:${selectedMinute} ${meridiem}`);
-    }, [meridiem, props, selectedHour, selectedMinute]);
+        setAppointmentTime(`${selectedHour}:${selectedMinute} ${meridiem}`);
+    }, [meridiem, selectedHour, selectedMinute, setAppointmentTime]);
 
     return (
         <View>
@@ -207,7 +207,7 @@ const TimePickerView = (props) => {
             <View style={timePickerStyle.timeText}>
                 <Text style={styles.inputTitle}>
                     <Text style={timePickerStyle.timeBold}>Time Chosen: </Text>
-                    {props.appointmentTime}
+                    {appointmentTime}
                 </Text>
             </View>
         </View>
@@ -217,7 +217,6 @@ const TimePickerView = (props) => {
 const CreateAppointmentScreen = ({ route, navigation }) => {
 
     const NONE = 'None';
-    const { user } = route.params;
 
     const [appointmentDate, setAppointmentDate] = useState(NONE);
     const [doctorList, setDoctorList] = useState([]);
@@ -250,9 +249,11 @@ const CreateAppointmentScreen = ({ route, navigation }) => {
 
     const getInvalidMessage = () => {
         if (invalidMessage.length !== 0) {
-            return <View>
-                <Text style={styles.inputInvalidText}>{invalidMessage.join('\n')}</Text>
-            </View>;
+            return (
+                <View>
+                    <Text style={styles.inputInvalidText}>{invalidMessage.join('\n')}</Text>
+                </View>
+            );
         }
     };
 
@@ -287,7 +288,7 @@ const CreateAppointmentScreen = ({ route, navigation }) => {
                     appointmentTime={appointmentTime}
                     NONE={NONE}
                 />
-                <View style={styles.horizontalBorder}/>
+                <HorizontalLine/>
                 <ChooseDoctorView
                     selectedDoctor={selectedDoctor}
                     setSelectedDoctor={setSelectedDoctor}
@@ -304,19 +305,16 @@ const CreateAppointmentScreen = ({ route, navigation }) => {
                     />
                 </View>
                 {getInvalidMessage()}
-                <View style={styles.addAppointmentView}>
-                    <TouchableOpacity
-                        style={styles.addAppointmentButton}
-                        onPress={() => {
-                            updateInvalidMessage();
-                            if (invalidMessage.length === 0) {
-                                confirmAppointmentAlert();
-                            }
-                        }}
-                    >
-                        <Text style={styles.addAppointmentText}>Create</Text>
-                    </TouchableOpacity>
-                </View>
+                <TouchableButton
+                    onPress={() => {
+                        updateInvalidMessage();
+                        if (invalidMessage.length === 0) {
+                            confirmAppointmentAlert();
+                        }
+                    }}
+                    text="Create"
+                    buttonStyle={buttonStyleDict.GREEN}
+                />
             </ScrollView>
         </KeyboardAvoidingView>
     );
@@ -345,11 +343,6 @@ const styles = StyleSheet.create({
     text: {
         textAlign: 'center',
         fontSize: 17,
-    },
-    horizontalBorder: {
-        borderBottomColor: '#000',
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        alignSelf: 'stretch',
     },
     inputView: {
         marginTop: 25,
@@ -388,29 +381,6 @@ const styles = StyleSheet.create({
     },
     chosenBold: {
         fontWeight: 'bold',
-    },
-    addAppointmentView: {
-        padding: 4,
-        paddingBottom: 10,
-        width: '100%',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    addAppointmentButton: {
-        backgroundColor: '#059862',
-        width: '80%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingBottom: 10,
-        paddingTop: 10,
-        paddingLeft: 10,
-        paddingRight: 10,
-        borderRadius: 15,
-        margin: 5,
-    },
-    addAppointmentText: {
-        color: '#FFFFFFE3',
-        fontSize: 17,
     },
     inputInvalidText: {
         color: '#990000',
