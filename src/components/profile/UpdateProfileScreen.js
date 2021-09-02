@@ -29,12 +29,10 @@ const UpdateProfileScreen = ({ navigation }) => {
     const [confirmNewPasswordMessage, setConfirmNewPasswordMessage] = useState('');
 
     const updatedAccountAlert = () => {
-        Alert.alert(
-            'Account successfully updated', 'Your account has been updated', [{
-                    text: 'OK', onPress: () => navigation.navigate('ProfileScreen'),
-                },
-            ]
-        );
+        Alert.alert('Account successfully updated', 'Your account has been updated', [{
+                text: 'OK', onPress: () => navigation.navigate('ProfileScreen'),
+            },
+        ]);
     };
 
     const authenticate = () => {

@@ -177,17 +177,15 @@ const UpdateDateTimeScreen = ({ route, navigation }) => {
     }, [appointmentDate, appointmentTime]);
 
     const confirmUpdateDateTime =  () => {
-        Alert.alert(
-            'Update Appointment Date/Time Confirmation', 'Are you sure new date/time is correct?\nYou can always change the information later should you need to', [{
-                    text: 'No', style: 'cancel',
-                }, {
-                    text: 'Yes', onPress: () => {
-                        updateDateTimeOfAppointment(undefined, id, appointmentDate, appointmentTime);
-                        navigation.navigate('UpdateAppointmentScreen');
-                    },
+        Alert.alert('Update Appointment Date/Time Confirmation', 'Are you sure new date/time is correct?\nYou can always change the information later should you need to', [{
+                text: 'No', style: 'cancel',
+            }, {
+                text: 'Yes', onPress: () => {
+                    updateDateTimeOfAppointment(undefined, id, appointmentDate, appointmentTime);
+                    navigation.navigate('UpdateAppointmentScreen');
                 },
-            ]
-        );
+            },
+        ]);
     };
 
     const GetNoAvailableDoctorMessage = () => {

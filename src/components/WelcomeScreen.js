@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView, Image } from 'react-native';
-import { ADMIN, USER } from '../../App';
+import { DOCTOR, PATIENT } from '../../App';
 import TouchableButton, {buttonStyleDict} from './reusable/TouchableButton';
 
 const WelcomeScreen = ({ navigation }) => {
@@ -17,8 +17,8 @@ const WelcomeScreen = ({ navigation }) => {
                 />
                 <TouchableButton
                     onPress={() => navigation.navigate('MainScreen', {
-                        admin: ADMIN,
-                        user: USER,
+                        doctor: DOCTOR,
+                        patient: PATIENT,
                     })}
                     text="Login"
                     buttonStyle={buttonStyleDict.GREEN}

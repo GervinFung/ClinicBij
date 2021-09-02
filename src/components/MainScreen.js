@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image, ScrollView } from 'react-native';
 import TouchableButton, {buttonStyleDict} from './reusable/TouchableButton';
+import { DOCTOR, PATIENT } from '../../App';
 
 const UserTypeLoginView = ({onPress, image, userType, style}) => {
 
@@ -30,7 +31,7 @@ const UserTypeLoginView = ({onPress, image, userType, style}) => {
 
 const MainScreen = ({ route, navigation }) => {
 
-    const { admin, user } = route.params;
+    const { doctor, patient } = route.params;
 
     return (
         <SafeAreaView style={styles.container}>
@@ -39,19 +40,19 @@ const MainScreen = ({ route, navigation }) => {
                 <View style={[styles.generalView]}>
                     <UserTypeLoginView
                         onPress={() => navigation.navigate('LoginScreen', {
-                            userType: 'admin',
+                            userType: DOCTOR,
                         })}
-                        image={require('../../img/admin.jpg')}
+                        image={require('../../img/doctor.jpg')}
                         style={buttonStyleDict.WHITE}
-                        userType={admin}
+                        userType={doctor}
                     />
                     <UserTypeLoginView
                         onPress={() => navigation.navigate('LoginScreen', {
-                            userType: 'user',
+                            userType: PATIENT,
                         })}
-                        image={require('../../img/user.jpg')}
+                        image={require('../../img/patient.jpg')}
                         style={buttonStyleDict.GREEN}
-                        userType={user}
+                        userType={patient}
                     />
                 </View>
             </ScrollView>

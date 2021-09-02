@@ -44,8 +44,8 @@ describe('test password has at least 1 number', () => {
 describe('test password has at least 1 symbol', () => {
     each([
         ['!', true],
-        ['abc 123', false],
-        ['1234 abc', false],
+        ['abc 123', true],
+        ['1234 abc', true],
         ['!@#$%^', true],
     ]).it("'when the password is %s", (password, expected) => {
         expect(checkPasswordContainSymbol(password)).toBe(expected);

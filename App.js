@@ -9,6 +9,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import WelcomeScreen from './src/components/WelcomeScreen';
 import LoginScreen from './src/components/LoginScreen';
 import RegistryScreen from './src/components/RegistryScreen';
+import ForgotPasswordScreen from './src/components/ForgotPasswordScreen';
+
 import MainScreen from './src/components/MainScreen';
 import HomeScreen from './src/components/HomeScreen';
 import HelpScreen from './src/components/HelpScreen';
@@ -51,6 +53,7 @@ const UserLessStackNav = () => {
             <Stack.Screen name="MainScreen" component={MainScreen} options={{ title: 'Main' }}/>
             <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ title: 'Login' }}/>
             <Stack.Screen name="RegistryScreen" component={RegistryScreen} options={{ title: 'Sign Up' }}/>
+            <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} options={{ title: 'Forgot Password' }}/>
         </Stack.Navigator>
     );
 };
@@ -176,8 +179,8 @@ const DrawerNav = () => {
     );
 };
 
-export const USER = 'USER';
-export const ADMIN = 'ADMIN';
+export const PATIENT = 'patient';
+export const DOCTOR = 'doctor';
 
 const App = () => {
 

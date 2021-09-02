@@ -10,8 +10,7 @@ const DeleteProfileScreen = ({ navigation }) => {
     const [validatePasswordMessage, setValidatePasswordMessage] = useState('');
 
     const deletedAccountAlert = () => {
-        Alert.alert(
-            'Account successfully deleted', 'Your account has been deleted', [{
+        Alert.alert('Account successfully deleted', 'Your account has been deleted', [{
                     text: 'OK', onPress: () => deleteCurrentUser(),
                 },
             ]
@@ -21,14 +20,12 @@ const DeleteProfileScreen = ({ navigation }) => {
     const authenticate = () => {
         getCredential(password).then(() => {
             setValidatePasswordMessage('');
-            Alert.alert(
-                'Delete Account Confirmation', 'This action cannot be undone', [{
-                        text: 'Cancel', style: 'cancel',
-                    }, {
-                        text: 'OK', onPress: () => deletedAccountAlert(),
-                    },
-                ]
-            );
+            Alert.alert('Delete Account Confirmation', 'This action cannot be undone', [{
+                    text: 'Cancel', style: 'cancel',
+                }, {
+                    text: 'OK', onPress: () => deletedAccountAlert(),
+                },
+            ]);
         }).catch(error => {
             if (error.code === 'auth/invalid-email' || error.code === 'auth/user-not-found') {
                 throw new Error('User should have logged in DeleteProfileScreen');

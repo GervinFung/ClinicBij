@@ -4,7 +4,7 @@ import { Avatar, Title, Caption, Drawer, Colors } from 'react-native-paper';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import {getUser, getAuth} from './components/util/UserUtil';
+import {getUser, getAuth, hasCurrentUser} from './components/util/UserUtil';
 import logoutProfile from './components/reusable/SignOutAlert';
 
 const ProfileIcon = () => {
@@ -12,7 +12,9 @@ const ProfileIcon = () => {
     const [user, setUser] = useState(getUser());
 
     useEffect(() => getAuth().onAuthStateChanged(() => {
-        setUser(getUser());
+        if (hasCurrentUser()) {
+            setUser(getUser());
+        }
     }), [user]);
 
     const profileStyle = StyleSheet.create({

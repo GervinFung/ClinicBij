@@ -255,17 +255,15 @@ const CreateAppointmentScreen = ({ route, navigation }) => {
     };
 
     const confirmAppointmentAlert = () => {
-        Alert.alert(
-            'Add new Appointment Confirmation', 'Are you sure all information is correct?\nYou can always change the information later should you need to', [{
-                    text: 'No', style: 'cancel',
-                }, {
-                    text: 'Yes', onPress: () => {
-                        addToAppointmentList(undefined, selectedDoctor, appointmentDate, appointmentTime, purpose);
-                        navigation.navigate('ReadAppointmentScreen');
-                    },
+        Alert.alert('Add new Appointment Confirmation', 'Are you sure all information is correct?\nYou can always change the information later should you need to', [{
+                text: 'No', style: 'cancel',
+            }, {
+                text: 'Yes', onPress: () => {
+                    addToAppointmentList(undefined, selectedDoctor, appointmentDate, appointmentTime, purpose);
+                    navigation.navigate('ReadAppointmentScreen');
                 },
-            ]
-        );
+            },
+        ]);
     };
 
     return (

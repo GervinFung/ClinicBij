@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity, KeyboardAvoidingView, Image, ScrollView } from 'react-native';
-import { ADMIN, USER } from '../../App';
+import { DOCTOR, PATIENT } from '../../App';
 import {getAuth} from './util/UserUtil';
 import TouchableButton, {buttonStyleDict} from './reusable/TouchableButton';
 
@@ -46,12 +46,12 @@ const LoginScreen = ({ route, navigation }) => {
     };
 
     const getImage = () => {
-        if (userType === ADMIN.toLowerCase()) {
-            return require('../../img/admin.jpg');
-        } else if (userType === USER.toLowerCase()) {
-            return require('../../img/user.jpg');
+        if (userType.toLowerCase() === DOCTOR.toLowerCase()) {
+            return require('../../img/doctor.jpg');
+        } else if (userType.toLowerCase() === PATIENT.toLowerCase()) {
+            return require('../../img/patient.jpg');
         }
-        throw new Error('userType can only be ADMIN or USER only');
+        throw new Error('userType can only be DOCTOR or PATIENT only');
     };
 
     return (
@@ -82,6 +82,12 @@ const LoginScreen = ({ route, navigation }) => {
                     <TouchableOpacity
                         onPress={() => navigation.navigate('RegistryScreen')}
                     ><Text style={styles.signupText}>Don't have an account? Signup</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('ForgotPasswordScreen', {
+                            userType: userType,
+                        })}
+                    ><Text style={styles.forgotPassword}>Forgot Password</Text>
                     </TouchableOpacity>
                     <TouchableButton
                         onPress={loginButtonPressed}
@@ -151,6 +157,11 @@ const styles = StyleSheet.create({
         color: '#121212',
         paddingBottom: 10,
         fontSize: 17,
+    },
+    forgotPassword: {
+        color: '#2196F3',
+        fontSize: 17,
+        paddingBottom: 10,
     },
 });
 

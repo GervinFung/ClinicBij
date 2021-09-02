@@ -8,9 +8,9 @@ export const getUser = () => {
         throw new Error('current user cannot be null at this point');
     }
     const userFound = getUserFromUserListUUID(currentUser.uid);
-    // if (checkNullOrUndefined(userFound)) {
-    //     throw new Error('user found cannot be null at this point');
-    // }
+    if (checkNullOrUndefined(userFound)) {
+        throw new Error('user found cannot be null at this point');
+    }
     return userFound;
 };
 

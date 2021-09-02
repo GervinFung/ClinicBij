@@ -6,7 +6,7 @@ import {validateFullName} from '../logic/fullName';
 import {validateIdentityCard} from '../logic/identityCard';
 import {validatePassword} from '../logic/password';
 import {addUser} from '../logic/tempUserList';
-import { ADMIN, USER } from '../../App';
+import { DOCTOR, PATIENT } from '../../App';
 import {getAuth} from './util/UserUtil';
 import {ConfirmPasswordTextInput, RegistryTextInput, PasswordTextInput} from './reusable/TextInput';
 import TouchableButton, {buttonStyleDict} from './reusable/TouchableButton';
@@ -28,21 +28,21 @@ const RegistryScreen = ({ navigation }) => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [confirmPasswordMessage, setConfirmPasswordMessage] = useState('');
 
-    const [invalidLogin, setInvalidLogin] = useState('');
+    const [invalidSignup, setInvalidSignup] = useState('');
 
     const signUp = () => {
         getAuth().createUserWithEmailAndPassword(email, password).then(() => {
-            setInvalidLogin('');
+            setInvalidSignup('');
             addUser(fullName, password, identityCard, email);
             navigation.navigate('LoginScreen', {
-                userType: 'user',
+                userType: PATIENT,
             });
         }).catch(error => {
             if (error.code === 'auth/email-already-in-use') {
-                setInvalidLogin('That email address is already exist!');
+                setInvalidSignup('That email address is already exist!');
             }
             if (error.code === 'auth/invalid-email') {
-                setInvalidLogin('That email address is invalid!');
+                setInvalidSignup('That email address is invalid!');
             }
         });
     };
@@ -57,7 +57,7 @@ const RegistryScreen = ({ navigation }) => {
         }
     };
 
-    const ShowInvalidLogin = () => stringIsEmpty(invalidLogin) ? null : <Text style={styles.inputInvalidText}>{invalidLogin}</Text>;
+    const ShowInvalidSignup = () => stringIsEmpty(invalidSignup) ? null : <Text style={styles.inputInvalidText}>{invalidSignup}</Text>;
 
     useEffect(() => {
         const empty = (stringIsEmpty(validatePassword(password)) && password === confirmPassword) || stringIsEmpty(password);
@@ -132,12 +132,12 @@ const RegistryScreen = ({ navigation }) => {
                 <View style={[styles.generalView]}>
                     <TouchableOpacity
                         onPress={() => navigation.navigate('MainScreen', {
-                            admin: ADMIN,
-                            user: USER,
+                            doctor: DOCTOR,
+                            patient: PATIENT,
                         })}
                     ><Text style={styles.loginText}>Already haven an account? Login</Text>
                     </TouchableOpacity>
-                    <ShowInvalidLogin/>
+                    <ShowInvalidSignup/>
                     <TouchableButton
                         onPress={signupButtonPressed}
                         text="Sign Up"

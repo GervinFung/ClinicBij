@@ -87,17 +87,15 @@ const UpdateDoctorScreen = ({ route, navigation }) => {
 
 
     const confirmUpdateDoctor =  () => {
-        Alert.alert(
-            'Update Appointment Doctor Confirmation', 'Are you sure newly selected doctor is correct?\nYou can always change the information later should you need to', [{
-                    text: 'No', style: 'cancel',
-                }, {
-                    text: 'Yes', onPress: () => {
-                        updateDoctorOfAppointment(undefined, id, selectedDoctor);
-                        navigation.navigate('UpdateAppointmentScreen');
-                    },
+        Alert.alert('Update Appointment Doctor Confirmation', 'Are you sure newly selected doctor is correct?\nYou can always change the information later should you need to', [{
+                text: 'No', style: 'cancel',
+            }, {
+                text: 'Yes', onPress: () => {
+                    updateDoctorOfAppointment(undefined, id, selectedDoctor);
+                    navigation.navigate('UpdateAppointmentScreen');
                 },
-            ]
-        );
+            },
+        ]);
     };
 
     return (

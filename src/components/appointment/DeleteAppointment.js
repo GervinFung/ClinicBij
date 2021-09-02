@@ -8,17 +8,15 @@ const DeleteAppointmentScreen = ({ route, navigation }) => {
     const [appointmentList, setAppointmentList] = useState(getPendingAppointmentList());
 
     const onPress = (id) => {
-        Alert.alert(
-            `Cancel Appointment ${id} Confirmation`, 'This action cannot be undone', [{
-                    text: 'Cancel', style: 'cancel',
-                }, {
-                    text: 'OK', onPress: () => {
-                        setAppointmentList(removeFromPendingAppointmentList(id));
-                        navigation.navigate('ReadAppointmentScreen');
-                    },
+        Alert.alert(`Cancel Appointment ${id} Confirmation`, 'This action cannot be undone', [{
+                text: 'Cancel', style: 'cancel',
+            }, {
+                text: 'OK', onPress: () => {
+                    setAppointmentList(removeFromPendingAppointmentList(id));
+                    navigation.navigate('ReadAppointmentScreen');
                 },
-            ]
-        );
+            },
+        ]);
     };
 
     const GetFlatList = () => {

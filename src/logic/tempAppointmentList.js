@@ -45,13 +45,9 @@ let appointmentList = [{
 
 const optionList = ['All', 'Cancelled', 'Done', 'Pending'];
 
-export const getAppointmentList = (user, appointmentDate, appointmentTime) => {
-    return appointmentList;
-};
+export const getAppointmentList = (user, appointmentDate, appointmentTime) => appointmentList;
 
-export const getOptionList = () => {
-    return optionList;
-};
+export const getOptionList = () => optionList;
 
 const getDoneAppointmentList = (user) => {
     return appointmentList.filter((appointment) => {
@@ -71,21 +67,13 @@ const getCancelledAppointmentList = (user) => {
     });
 };
 
-export const isAllStatus = (all) => {
-    return all.toLowerCase() === 'all';
-};
+export const isAllStatus = (all) => all.toLowerCase() === 'all';
 
-export const isDoneStatus = (done) => {
-    return done.toLowerCase() === 'done';
-};
+export const isDoneStatus = (done) => done.toLowerCase() === 'done';
 
-export const isPendingStatus = (pending) => {
-    return pending.toLowerCase() === 'pending';
-};
+export const isPendingStatus = (pending) => pending.toLowerCase() === 'pending';
 
-export const isCancelledStatus = (cancelled) => {
-    return cancelled.toLowerCase() === 'cancelled';
-};
+export const isCancelledStatus = (cancelled) => cancelled.toLowerCase() === 'cancelled';
 
 export const getFilteredAppointmentList = (itemValue) => {
     if (isAllStatus(itemValue)) {
@@ -110,9 +98,7 @@ export const removeFromPendingAppointmentList = (id) => {
 // add to appointment
 
 export const addToAppointmentList = (user, doctor, date, time, purpose) => {
-    const id = Math.max.apply(Math, appointmentList.map((appointment) => {
-        return appointment.id;
-    }));
+    const id = Math.max.apply(Math, appointmentList.map((appointment) => appointment.id));
     const appointment = {
         doctor: doctor,
         date: date,
@@ -127,9 +113,7 @@ export const addToAppointmentList = (user, doctor, date, time, purpose) => {
 // update to appointment
 
 const getAppointmentFound = (id) => {
-    const appointmentFound = appointmentList.find((appointment) => {
-        return appointment.id === id;
-    });
+    const appointmentFound = appointmentList.find((appointment) => appointment.id === id);
     if (appointmentFound === undefined) {
         throw new Error('ID passed as parameter is invalid, hence no appointment was found');
     }

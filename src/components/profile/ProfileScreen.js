@@ -16,7 +16,7 @@ const ProfileScreen = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
-                <View style={styles.generalView}><Image style={styles.welcomeImage} source={require('../../../img/user.jpg')}/></View>
+                <View style={styles.generalView}><Image style={styles.welcomeImage} source={require('../../../img/patient.jpg')}/></View>
                 <View style={styles.generalView}><Text style={styles.title}>Bonjour {currentUser.fullName}</Text></View>
                 <View style={styles.menuContainer}>
                     <GridView

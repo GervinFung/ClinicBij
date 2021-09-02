@@ -35,17 +35,15 @@ const UpdatePurposeScreen = ({ route, navigation }) => {
 
     const confirmUpdatePurpose =  () => {
 
-        Alert.alert(
-            'Update Appointment Purpose Confirmation', 'Are you sure new purpose is correct?\nYou can always change the information later should you need to', [{
-                    text: 'No', style: 'cancel',
-                }, {
-                    text: 'Yes', onPress: () => {
-                        updatePurposeOfAppointment(undefined, id, newPurpose);
-                        navigation.navigate('UpdateAppointmentScreen');
-                    },
+        Alert.alert('Update Appointment Purpose Confirmation', 'Are you sure new purpose is correct?\nYou can always change the information later should you need to', [{
+                text: 'No', style: 'cancel',
+            }, {
+                text: 'Yes', onPress: () => {
+                    updatePurposeOfAppointment(undefined, id, newPurpose);
+                    navigation.navigate('UpdateAppointmentScreen');
                 },
-            ]
-        );
+            },
+        ]);
     };
 
     return (
