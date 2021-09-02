@@ -7,7 +7,11 @@ export const getUser = () => {
     if (checkNullOrUndefined(currentUser)) {
         throw new Error('current user cannot be null at this point');
     }
-    return getUserFromUserListUUID(currentUser.uid);
+    const userFound = getUserFromUserListUUID(currentUser.uid);
+    // if (checkNullOrUndefined(userFound)) {
+    //     throw new Error('user found cannot be null at this point');
+    // }
+    return userFound;
 };
 
 export const getCurrentUser = () => auth().currentUser;
@@ -21,9 +25,9 @@ export const getCredential = (password) =>  {
     return getCurrentUser().reauthenticateWithCredential(credential);
 };
 
-export const deleteCurrentUser = (navigation) => {
+export const deleteCurrentUser = () => {
     getCurrentUser().delete().then(() => {
-        navigation.navigate('WelcomeScreen');
+        console.log('deleted user');
     }).catch((error) => {
         console.log(error);
     });
@@ -56,9 +60,9 @@ export const updateCurrentUserPassword = (newPassword) => {
     });
 };
 
-export const signOutCurrentUser = (navigation) => {
+export const signOutCurrentUser = () => {
     getAuth().signOut().then(() => {
-        navigation.navigate('WelcomeScreen');
+        console.log('sign out user');
     }).catch((error) => {
         console.log(error);
     });

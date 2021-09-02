@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image, ScrollView } from 'react-native';
 import TouchableButton, {buttonStyleDict} from './reusable/TouchableButton';
 
 const UserTypeLoginView = ({onPress, image, userType, style}) => {
@@ -34,30 +34,38 @@ const MainScreen = ({ route, navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.generalView}><Text style={styles.title}>Welcome to MySejahtera</Text></View>
-            <View style={[styles.generalView]}>
-                <UserTypeLoginView
-                    onPress={() => navigation.navigate('LoginScreen', {
-                        userType: 'admin',
-                    })}
-                    image={require('../../img/admin.jpg')}
-                    style={buttonStyleDict.WHITE}
-                    userType={admin}
-                />
-                <UserTypeLoginView
-                    onPress={() => navigation.navigate('LoginScreen', {
-                        userType: 'user',
-                    })}
-                    image={require('../../img/user.jpg')}
-                    style={buttonStyleDict.GREEN}
-                    userType={user}
-                />
-            </View>
+            <ScrollView contentContainerStyle={styles.scrollView}>
+                <View style={styles.generalView}><Text style={styles.title}>Welcome to MySejahtera</Text></View>
+                <View style={[styles.generalView]}>
+                    <UserTypeLoginView
+                        onPress={() => navigation.navigate('LoginScreen', {
+                            userType: 'admin',
+                        })}
+                        image={require('../../img/admin.jpg')}
+                        style={buttonStyleDict.WHITE}
+                        userType={admin}
+                    />
+                    <UserTypeLoginView
+                        onPress={() => navigation.navigate('LoginScreen', {
+                            userType: 'user',
+                        })}
+                        image={require('../../img/user.jpg')}
+                        style={buttonStyleDict.GREEN}
+                        userType={user}
+                    />
+                </View>
+            </ScrollView>
         </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
+    scrollView: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        flex: 1,
+    },
     generalView: {
         paddingTop: 10,
         paddingBottom: 20,
@@ -66,11 +74,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     container: {
-        width: '100%',
         flex: 1,
         backgroundColor: '#FEFEFE',
-        alignItems: 'center',
-        justifyContent: 'center',
     },
     title: {
         color: '#2196F3',

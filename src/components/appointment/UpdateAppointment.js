@@ -7,11 +7,13 @@ const UpdateAppointmentScreen = ({ route, navigation }) => {
 
     const appointmentList = getPendingAppointmentList();
 
-    const getFlatList = () => {
+    const GetFlatList = () => {
         if (appointmentList.length === 0) {
-            return <View style={styles.centerView}>
-                <Text style={styles.noAppointmentMessage}>No Pending Appointment(s)</Text>
-            </View>;
+            return (
+                <View style={styles.centerView}>
+                    <Text style={styles.noAppointmentMessage}>No Pending Appointment(s)</Text>
+                </View>
+            );
         }
         return (
             <FlatList
@@ -43,7 +45,7 @@ const UpdateAppointmentScreen = ({ route, navigation }) => {
                 <Image source={require('../../../img/CRUD/deleteAppointment.jpg')} style={styles.image}/>
                 <Text style={styles.text}>Update Appointment</Text>
             </View>
-            {getFlatList()}
+            <GetFlatList/>
         </SafeAreaView>
     );
 };

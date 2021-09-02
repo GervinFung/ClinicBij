@@ -225,10 +225,6 @@ const CreateAppointmentScreen = ({ route, navigation }) => {
     const [purpose, setPurpose] = useState('');
     const [invalidMessage, setInvalidMessage] = useState([]);
 
-    // const determineInputBoxColor = () => {
-    //     return appointmentDate === null ? styles.inactiveInputBox : styles.activeInputBox;
-    // };
-
     useEffect(() => {
         setDoctorList(getAvailableDoctor(appointmentDate, appointmentTime));
     }, [appointmentDate, appointmentTime]);
@@ -247,7 +243,7 @@ const CreateAppointmentScreen = ({ route, navigation }) => {
         setInvalidMessage(list);
     };
 
-    const getInvalidMessage = () => {
+    const GetInvalidMessage = () => {
         if (invalidMessage.length !== 0) {
             return (
                 <View>
@@ -255,6 +251,7 @@ const CreateAppointmentScreen = ({ route, navigation }) => {
                 </View>
             );
         }
+        return null;
     };
 
     const confirmAppointmentAlert = () => {
@@ -304,7 +301,7 @@ const CreateAppointmentScreen = ({ route, navigation }) => {
                         keyboardType="ascii-capable"
                     />
                 </View>
-                {getInvalidMessage()}
+                <GetInvalidMessage/>
                 <TouchableButton
                     onPress={() => {
                         updateInvalidMessage();
@@ -366,12 +363,6 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         margin: 5,
         fontSize: 15,
-    },
-    activeInputBox: {
-        backgroundColor: '#FEFEFE',
-    },
-    inactiveInputBox: {
-        backgroundColor: '#EEEEEE',
     },
     chosenText: {
         alignItems: 'center',

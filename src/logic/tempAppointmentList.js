@@ -100,12 +100,10 @@ export const getFilteredAppointmentList = (itemValue) => {
     throw new Error('Status should be either ALL, DONE, CANCELLED or PENDING');
 };
 
-// remove from appointment
+// change to cancel from pending from appointment
 
 export const removeFromPendingAppointmentList = (id) => {
-    appointmentList = appointmentList.filter((appointment) => {
-        return appointment.id !== id;
-    });
+    getAppointmentFound(id).status = 'cancelled';
     return getPendingAppointmentList();
 };
 

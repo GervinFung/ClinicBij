@@ -5,6 +5,7 @@ const userList = [
     {email: 'KohRongSoon123!@gmail.com', password: 'KohRongSoon123!@#', fullName: 'Koh Rong Soon'},
     {email: 'WongYeeJing123!@gmail.com', password: 'WongYeeJing123!@#', fullName: 'Wong Yee Jing'},
     {email: 'gervinfungdaxuen@gmail.com', password: '123456A$', fullName: 'Gervin', uuid: 'YxwIkQ72lHf6KV62JDbfFE5tZBp2'},
+    {email: 'drakon@gm.com', password: '123456A$', fullName: 'Drakon', uuid: 'ObYeGFHVLXgjcGgJaYf3FLeu6cP2'},
 ];
 
 export const getUserFromUserList = (email, password) => {

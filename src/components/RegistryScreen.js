@@ -57,22 +57,7 @@ const RegistryScreen = ({ navigation }) => {
         }
     };
 
-    const showInputInvalid = (message) => {
-        if (message.length !== 0) {
-            return (
-                <Text style={styles.inputInvalidText}>{message}</Text>
-            );
-        }
-    };
-
-    const showInvalidLogin = () => {
-        if (stringIsEmpty(invalidLogin)) {
-            return;
-        }
-        return (
-            <Text style={styles.inputInvalidText}>{invalidLogin}</Text>
-        );
-    };
+    const ShowInvalidLogin = () => stringIsEmpty(invalidLogin) ? null : <Text style={styles.inputInvalidText}>{invalidLogin}</Text>;
 
     useEffect(() => {
         const empty = (stringIsEmpty(validatePassword(password)) && password === confirmPassword) || stringIsEmpty(password);
@@ -87,14 +72,13 @@ const RegistryScreen = ({ navigation }) => {
 
     return (
         <KeyboardAvoidingView behavior="height" style={styles.container}>
-            <ScrollView behavior="height" contentContainerStyle={styles.scrollView}>
+            <ScrollView contentContainerStyle={styles.scrollView}>
                 <View style={styles.generalView}><Text style={styles.title}>Sign Up</Text></View>
                 <View style={[styles.generalView, styles.inputView]}>
                     <RegistryTextInput
                         value={fullName}
                         propsRef={fullNameInput}
                         nextRef={emailInput.current}
-                        showInputInvalid={showInputInvalid}
                         placeholder={'Full Name'}
                         validationFunction={validateFullName}
                         setValue={setFullName}
@@ -107,7 +91,6 @@ const RegistryScreen = ({ navigation }) => {
                         value={email}
                         propsRef={emailInput}
                         nextRef={identityCardInput.current}
-                        showInputInvalid={showInputInvalid}
                         placeholder={'Email'}
                         validationFunction={validateEmail}
                         setValue={setEmail}
@@ -120,7 +103,6 @@ const RegistryScreen = ({ navigation }) => {
                         value={identityCard}
                         propsRef={identityCardInput}
                         nextRef={passwordInput.current}
-                        showInputInvalid={showInputInvalid}
                         placeholder={'Identity Card'}
                         validationFunction={validateIdentityCard}
                         setValue={setIdentityCard}
@@ -133,7 +115,6 @@ const RegistryScreen = ({ navigation }) => {
                         value={password}
                         propsRef={passwordInput}
                         nextRef={confirmPasswordInput.current}
-                        showInputInvalid={showInputInvalid}
                         placeholder="New Password"
                         validationFunction={validatePassword}
                         setValue={setPassword}
@@ -143,7 +124,6 @@ const RegistryScreen = ({ navigation }) => {
                     <ConfirmPasswordTextInput
                         value={confirmPassword}
                         propsRef={confirmPasswordInput}
-                        showInputInvalid={showInputInvalid}
                         placeholder="Confirm New Password"
                         setValue={setConfirmPassword}
                         inputMessage={confirmPasswordMessage}
@@ -157,7 +137,7 @@ const RegistryScreen = ({ navigation }) => {
                         })}
                     ><Text style={styles.loginText}>Already haven an account? Login</Text>
                     </TouchableOpacity>
-                    {showInvalidLogin()}
+                    <ShowInvalidLogin/>
                     <TouchableButton
                         onPress={signupButtonPressed}
                         text="Sign Up"

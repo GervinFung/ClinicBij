@@ -30,7 +30,7 @@ const UpdateProfileScreen = ({ navigation }) => {
 
     const updatedAccountAlert = () => {
         Alert.alert(
-            'Account successfully deleted', 'Your account has been deleted', [{
+            'Account successfully updated', 'Your account has been updated', [{
                     text: 'OK', onPress: () => navigation.navigate('ProfileScreen'),
                 },
             ]
@@ -68,14 +68,6 @@ const UpdateProfileScreen = ({ navigation }) => {
         const empty = (stringIsEmpty(validatePassword(newPassword)) && newPassword === confirmNewPassword) || stringIsEmpty(newPassword);
         setConfirmNewPasswordMessage(empty ? '' : 'Both passwords are not the same');
     }, [newPassword, confirmNewPassword]);
-
-    const showInputInvalid = (message) => {
-        if (message.length !== 0) {
-            return (
-                <Text style={styles.inputInvalidText}>{message}</Text>
-            );
-        }
-    };
 
     const fullNameInput = useRef(TextInput);
     const emailInput = useRef(TextInput);
@@ -120,7 +112,6 @@ const UpdateProfileScreen = ({ navigation }) => {
                         value={fullName}
                         propsRef={fullNameInput}
                         nextRef={emailInput.current}
-                        showInputInvalid={showInputInvalid}
                         placeholder="New Full Name"
                         validationFunction={validateFullName}
                         setValue={setFullName}
@@ -137,7 +128,6 @@ const UpdateProfileScreen = ({ navigation }) => {
                         value={email}
                         propsRef={emailInput}
                         nextRef={newPasswordInput.current}
-                        showInputInvalid={showInputInvalid}
                         placeholder="New Email"
                         validationFunction={validateEmail}
                         setValue={setEmail}
@@ -158,7 +148,6 @@ const UpdateProfileScreen = ({ navigation }) => {
                         value={newPassword}
                         propsRef={newPasswordInput}
                         nextRef={confirmPasswordInput.current}
-                        showInputInvalid={showInputInvalid}
                         placeholder="New Password"
                         validationFunction={validatePassword}
                         setValue={setNewPassword}
@@ -168,7 +157,6 @@ const UpdateProfileScreen = ({ navigation }) => {
                     <ConfirmPasswordTextInput
                         propsRef={confirmPasswordInput}
                         value={confirmNewPassword}
-                        showInputInvalid={showInputInvalid}
                         placeholder="Confirm New Password"
                         setValue={setConfirmNewPassword}
                         inputMessage={confirmNewPasswordMessage}
@@ -183,7 +171,6 @@ const UpdateProfileScreen = ({ navigation }) => {
                     password={password}
                     setPassword={setPassword}
                     passwordMessage={passwordMessage}
-                    showInputInvalid={showInputInvalid}
                 />
                 <TouchableButton
                     onPress={() => authenticate()}

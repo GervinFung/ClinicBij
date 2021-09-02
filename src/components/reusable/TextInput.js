@@ -34,9 +34,13 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10,
     },
+    inputInvalidText: {
+        color: '#990000',
+        fontSize: 14,
+    },
 });
 
-const PasswordTextInput = ({value, placeholder, setValue, setInputMessage, validationFunction, showInputInvalid, inputMessage, propsRef, nextRef}) => {
+const PasswordTextInput = ({value, placeholder, setValue, setInputMessage, validationFunction, inputMessage, propsRef, nextRef}) => {
 
     return (
         <View style={styles.generalView}>
@@ -62,13 +66,13 @@ const PasswordTextInput = ({value, placeholder, setValue, setInputMessage, valid
                 }}
             />
             <View style={styles.generalView}>
-                {showInputInvalid(inputMessage)}
+                <ShowInputInvalid inputMessage={inputMessage}/>
             </View>
         </View>
     );
 };
 
-const ConfirmPasswordTextInput = ({value, placeholder, setValue, showInputInvalid, inputMessage, propsRef}) => {
+const ConfirmPasswordTextInput = ({value, placeholder, setValue, inputMessage, propsRef}) => {
 
     return (
         <View style={styles.generalView}>
@@ -90,13 +94,13 @@ const ConfirmPasswordTextInput = ({value, placeholder, setValue, showInputInvali
                 }}
             />
             <View style={styles.generalView}>
-                {showInputInvalid(inputMessage)}
+                <ShowInputInvalid inputMessage={inputMessage}/>
             </View>
         </View>
     );
 };
 
-const RegistryTextInput = ({value, secureTextEntry, placeholder, keyboardType, setValue, setInputMessage, validationFunction, showInputInvalid, inputMessage, propsRef, nextRef}) => {
+const RegistryTextInput = ({value, secureTextEntry, placeholder, keyboardType, setValue, setInputMessage, validationFunction, inputMessage, propsRef, nextRef}) => {
 
     return (
         <View style={styles.generalView}>
@@ -123,13 +127,15 @@ const RegistryTextInput = ({value, secureTextEntry, placeholder, keyboardType, s
                 }}
             />
             <View style={styles.generalView}>
-                {showInputInvalid(inputMessage)}
+                <ShowInputInvalid inputMessage={inputMessage}/>
             </View>
         </View>
     );
 };
 
-const CurrentPasswordTextInput = ({password, passwordMessage, showInputInvalid, setPassword}) => {
+const ShowInputInvalid = ({inputMessage}) => validateInput(inputMessage) ? <Text style={styles.inputInvalidText}>{inputMessage}</Text> : null;
+
+const CurrentPasswordTextInput = ({password, passwordMessage, setPassword}) => {
     return (
         <View style={styles.generalView}>
             <View style={styles.confirmIdentityView}><Text style={styles.confirmIdentityText}>Please confirm your identity</Text></View>
@@ -145,7 +151,7 @@ const CurrentPasswordTextInput = ({password, passwordMessage, showInputInvalid, 
                 }}
             />
             <View style={styles.generalView}>
-                {showInputInvalid(passwordMessage)}
+                <ShowInputInvalid inputMessage={passwordMessage}/>
             </View>
         </View>
     );

@@ -21,11 +21,13 @@ const DeleteAppointmentScreen = ({ route, navigation }) => {
         );
     };
 
-    const getFlatList = () => {
+    const GetFlatList = () => {
         if (appointmentList.length === 0) {
-            return <View style={styles.centerView}>
-                <Text style={styles.noAppointmentMessage}>No Pending Appointment(s)</Text>
-            </View>;
+            return (
+                <View style={styles.centerView}>
+                    <Text style={styles.noAppointmentMessage}>No Pending Appointment(s)</Text>
+                </View>
+            );
         }
         return (
             <FlatList
@@ -53,7 +55,7 @@ const DeleteAppointmentScreen = ({ route, navigation }) => {
                 <Image source={require('../../../img/CRUD/deleteAppointment.jpg')} style={styles.image}/>
                 <Text style={styles.text}>Cancel Appointment</Text>
             </View>
-            {getFlatList()}
+            <GetFlatList/>
         </SafeAreaView>
     );
 };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, View, KeyboardAvoidingView, Image, Alert } from 'react-native';
+import { StyleSheet, Text, TextInput, View, KeyboardAvoidingView, Image, Alert, ScrollView } from 'react-native';
 
 import {updatePurposeOfAppointment} from '../../../logic/tempAppointmentList';
 import TouchableButton, {buttonStyleDict} from '../../reusable/TouchableButton';
@@ -9,7 +9,6 @@ const PurposeTextView = ({type, purpose}) => {
     const purposeStyle = StyleSheet.create({
         currentPurposeView: {
             width: '100%',
-            backgroundColor: '#FEFEFE',
             alignItems: 'center',
             justifyContent: 'center',
             marginBottom: 25,
@@ -51,45 +50,50 @@ const UpdatePurposeScreen = ({ route, navigation }) => {
 
     return (
         <KeyboardAvoidingView style={styles.container}>
-            <View style={styles.generalView}>
-                <Image source={require('../../../../img/update/changeDoctor.jpg')} style={styles.image}/>
-            </View>
-            <PurposeTextView
-                type="current"
-                purpose={purpose}
-            />
-            <View style={styles.generalView}>
-                <Text style={styles.purpose}>Update of appointment</Text>
-                <TextInput
-                    value={newPurpose}
-                    style={styles.inputBox}
-                    placeholder="Purpose of Appointment"
-                    keyboardType="ascii-capable"
-                    onChangeText={setNewPurpose}
-                />
+            <ScrollView contentContainerStyle={styles.scrollView}>
+                <View style={styles.generalView}>
+                    <Image source={require('../../../../img/update/changeDoctor.jpg')} style={styles.image}/>
+                </View>
                 <PurposeTextView
-                    type="new"
-                    purpose={newPurpose}
+                    type="current"
+                    purpose={purpose}
                 />
-            </View>
-            <TouchableButton
-                onPress={confirmUpdatePurpose}
-                text="Update Appointment"
-                buttonStyle={buttonStyleDict.GREEN}
-            />
+                <View style={styles.generalView}>
+                    <Text style={styles.purpose}>Update of appointment</Text>
+                    <TextInput
+                        value={newPurpose}
+                        style={styles.inputBox}
+                        placeholder="Purpose of Appointment"
+                        keyboardType="ascii-capable"
+                        onChangeText={setNewPurpose}
+                    />
+                    <PurposeTextView
+                        type="new"
+                        purpose={newPurpose}
+                    />
+                </View>
+                <TouchableButton
+                    onPress={confirmUpdatePurpose}
+                    text="Update Appointment"
+                    buttonStyle={buttonStyleDict.GREEN}
+                />
+            </ScrollView>
         </KeyboardAvoidingView>
     );
 };
 
 const styles = StyleSheet.create({
+    scrollView: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        flex: 1,
+    },
     container: {
         padding: 4,
         paddingBottom: 7,
-        width: '100%',
         flex: 1,
         backgroundColor: '#FEFEFE',
-        alignItems: 'center',
-        justifyContent: 'center',
     },
     generalView: {
         width: '100%',

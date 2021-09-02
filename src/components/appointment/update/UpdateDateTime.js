@@ -190,12 +190,15 @@ const UpdateDateTimeScreen = ({ route, navigation }) => {
         );
     };
 
-    const getNoAvailableDoctorMessage = () => {
+    const GetNoAvailableDoctorMessage = () => {
         if (doctorList.length === 0) {
-            return <View>
-                <Text style={styles.noAvailableDoctorText}>No available Doctor at {appointmentDate} {appointmentTime}</Text>
-            </View>;
+            return (
+                <View>
+                    <Text style={styles.noAvailableDoctorText}>No available Doctor at {appointmentDate} {appointmentTime}</Text>
+                </View>
+            );
         }
+        return null;
     };
 
     return (
@@ -217,7 +220,7 @@ const UpdateDateTimeScreen = ({ route, navigation }) => {
                         NONE={NONE}
                     />
                 </View>
-                {getNoAvailableDoctorMessage()}
+                <GetNoAvailableDoctorMessage/>
                 <TouchableButton
                     onPress={confirmUpdateDateTime}
                     text="Update Appointment"

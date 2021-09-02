@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Image, Alert } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView } from 'react-native';
 import {getUserFromUserListUUID} from '../../logic/tempUserList';
 import GridView from '../reusable/GridView';
 import {getCurrentUser, getAuth} from '../util/UserUtil';
+import logoutProfile from '../reusable/SignOutAlert';
 
 const ProfileScreen = ({ navigation }) => {
 
@@ -12,43 +13,29 @@ const ProfileScreen = ({ navigation }) => {
         setCurrentUser(user === null ? null : getUserFromUserListUUID(user.uid));
     }), []);
 
-    const logoutProfile = () => {
-        Alert.alert(
-            'Log Out Confirmation', 'Are you sure you want to logout', [{
-                    text: 'Cancel', style: 'cancel',
-                }, {
-                    text: 'OK', onPress: () => {
-                        getAuth().signOut().then(() => {
-                            navigation.navigate('WelcomeScreen');
-                        });
-                    },
-                },
-            ]
-        );
-    };
-
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.generalView}><Image style={styles.welcomeImage} source={require('../../../img/user.jpg')}/></View>
-            <View style={styles.generalView}><Text style={styles.title}>Bonjour {currentUser.fullName}</Text></View>
-            <View style={styles.menuContainer}>
-                <GridView
-                    image={require('../../../img/update.jpg')}
-                    type="Update"
-                    onPress={() => navigation.navigate('UpdateProfileScreen')}
-                />
-                <GridView
-                    image={require('../../../img/delete.jpg')}
-                    type="Delete"
-                    onPress={() => navigation.navigate('DeleteProfileScreen')}
-                />
-                <GridView
-                    image={require('../../../img/delete.jpg')}
-                    type="Logout"
-                    onPress={() => logoutProfile()}
-                />
-            </View>
-
+            <ScrollView>
+                <View style={styles.generalView}><Image style={styles.welcomeImage} source={require('../../../img/user.jpg')}/></View>
+                <View style={styles.generalView}><Text style={styles.title}>Bonjour {currentUser.fullName}</Text></View>
+                <View style={styles.menuContainer}>
+                    <GridView
+                        image={require('../../../img/update.jpg')}
+                        type="Update"
+                        onPress={() => navigation.navigate('UpdateProfileScreen')}
+                    />
+                    <GridView
+                        image={require('../../../img/delete.jpg')}
+                        type="Delete"
+                        onPress={() => navigation.navigate('DeleteProfileScreen')}
+                    />
+                    <GridView
+                        image={require('../../../img/delete.jpg')}
+                        type="Logout"
+                        onPress={() => logoutProfile()}
+                    />
+                </View>
+            </ScrollView>
         </SafeAreaView>
     );
 };

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { StyleSheet, Text, TextInput, View, TouchableOpacity, KeyboardAvoidingView, Image } from 'react-native';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity, KeyboardAvoidingView, Image, ScrollView } from 'react-native';
 import { ADMIN, USER } from '../../App';
 import {getAuth} from './util/UserUtil';
 import TouchableButton, {buttonStyleDict} from './reusable/TouchableButton';
@@ -20,7 +20,6 @@ const LoginScreen = ({ route, navigation }) => {
         getAuth().signInWithEmailAndPassword(email, password).then(() => {
             setInputInvalid(false);
             setInputInvalidMsg('');
-            navigation.navigate('HomeScreen');
         }).catch(error => {
             setInputInvalid(true);
             if (error.code === 'auth/invalid-email') {
@@ -35,7 +34,7 @@ const LoginScreen = ({ route, navigation }) => {
         });
     };
 
-    const showInputInvalidText = () => {
+    const ShowInputInvalidText = () => {
         if (inputInvalid) {
             return (
                 <View style={styles.inputInvalid}>
@@ -43,6 +42,7 @@ const LoginScreen = ({ route, navigation }) => {
                 </View>
             );
         }
+        return null;
     };
 
     const getImage = () => {
@@ -56,45 +56,51 @@ const LoginScreen = ({ route, navigation }) => {
 
     return (
         <KeyboardAvoidingView style={styles.container}>
-            <View style={styles.generalView}>
-                <Image style={styles.image} source={getImage()}/>
-                <Text style={styles.title}>{userType.toUpperCase()}</Text>
-            </View>
-            <View style={[styles.generalView, styles.inputView]}>
-                <TextInput
-                    ref={emailInput}
-                    style={styles.inputBox}
-                    placeholder="Email"
-                    onChangeText={(text) => setEmail(text)}
-                    onSubmitEditing={() => passwordInput.current.focus()}
-                />
-                <TextInput
-                    ref={passwordInput}
-                    secureTextEntry={true}
-                    style={styles.inputBox}
-                    placeholder="Password"
-                    onChangeText={(text) => setPassword(text)}
-                />
+            <ScrollView contentContainerStyle={styles.scrollView}>
                 <View style={styles.generalView}>
-                    {showInputInvalidText()}
+                    <Image style={styles.image} source={getImage()}/>
+                    <Text style={styles.title}>{userType.toUpperCase()}</Text>
                 </View>
-            </View>
-            <View style={[styles.generalView]}>
-                <TouchableOpacity
-                    onPress={() => navigation.navigate('RegistryScreen')}
-                ><Text style={styles.signupText}>Don't have an account? Signup</Text>
-                </TouchableOpacity>
-                <TouchableButton
-                    onPress={loginButtonPressed}
-                    text="Login"
-                    buttonStyle={buttonStyleDict.GREEN}
-                />
-            </View>
+                <View style={[styles.generalView, styles.inputView]}>
+                    <TextInput
+                        ref={emailInput}
+                        style={styles.inputBox}
+                        placeholder="Email"
+                        onChangeText={(text) => setEmail(text)}
+                        onSubmitEditing={() => passwordInput.current.focus()}
+                    />
+                    <TextInput
+                        ref={passwordInput}
+                        secureTextEntry={true}
+                        style={styles.inputBox}
+                        placeholder="Password"
+                        onChangeText={(text) => setPassword(text)}
+                    />
+                    <View style={styles.generalView}><ShowInputInvalidText/></View>
+                </View>
+                <View style={[styles.generalView]}>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('RegistryScreen')}
+                    ><Text style={styles.signupText}>Don't have an account? Signup</Text>
+                    </TouchableOpacity>
+                    <TouchableButton
+                        onPress={loginButtonPressed}
+                        text="Login"
+                        buttonStyle={buttonStyleDict.GREEN}
+                    />
+                </View>
+            </ScrollView>
         </KeyboardAvoidingView>
     );
 };
 
 const styles = StyleSheet.create({
+    scrollView: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        flex: 1,
+    },
     generalView: {
         padding: 4,
         paddingBottom: 10,
@@ -103,11 +109,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     container: {
-        width: '100%',
         flex: 1,
         backgroundColor: '#FEFEFE',
-        alignItems: 'center',
-        justifyContent: 'center',
     },
     title: {
         color: '#2196F3',
@@ -123,7 +126,7 @@ const styles = StyleSheet.create({
         // backgroundColor: '#121212',
         borderColor: '#121212',
         width: '80%',
-        color: '#000',//'#FFFFFF99',
+        color: '#000',
         borderWidth: 1,
         paddingBottom: 10,
         paddingTop: 10,

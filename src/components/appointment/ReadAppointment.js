@@ -9,7 +9,7 @@ const ReadAppointmentScreen = ({ route, navigation }) => {
     const [appointmentType, setAppointmentType] = useState('All');
     const [appointmentList, setAppointmentList] = useState(getFilteredAppointmentList(appointmentType));
 
-    const getFilterList = () => {
+    const GetFilterList = () => {
         return getOptionList().map((option, index) => {
             return <Picker.Item key={index + option} value={option} label={option} />;
         });
@@ -32,8 +32,7 @@ const ReadAppointmentScreen = ({ route, navigation }) => {
                         selectedValue={appointmentType}
                         onValueChange={setAppointmentType}
                         style={styles.pickerView}
-                    >{getFilterList()}
-                    </Picker>
+                    >{GetFilterList()}</Picker>
                 </View>
             </View>
             <FlatList
