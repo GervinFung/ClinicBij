@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView, ScrollView, Linking } from 'react-native';
 import GridView from './reusable/GridView';
 
+
 const HelpScreen = () => {
 
     return (
@@ -18,7 +19,8 @@ const HelpScreen = () => {
                     <GridView
                         image={require('../../img/help/phone.jpg')}
                         type="Contact Number: 087-735123"
-                        onPress={() => {
+                        onPress={() =>  {
+                            Linking.openURL('tel:${087735123}') 
                             console.log('please help add 087 to contact list');
                         }}
                     />
