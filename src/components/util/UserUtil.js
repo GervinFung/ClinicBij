@@ -1,17 +1,13 @@
-import {getUserFromUserListUUID} from '../../logic/tempUserList';
 import auth from '@react-native-firebase/auth';
 import {checkNullOrUndefined, validateInput} from '../../logic/nullOrUndefinedInput';
+import { getUserData } from '../util/database';
 
-export const getUser = () => {
+export const getUser = async () => {
     const currentUser = auth().currentUser;
     if (checkNullOrUndefined(currentUser)) {
         throw new Error('current user cannot be null at this point');
     }
-    const userFound = getUserFromUserListUUID(currentUser.uid);
-    if (checkNullOrUndefined(userFound)) {
-        throw new Error('user found cannot be null at this point');
-    }
-    return userFound;
+    return await getUserData(currentUser.uid);
 };
 
 export const getCurrentUser = () => auth().currentUser;
@@ -25,9 +21,9 @@ export const getCredential = (password) =>  {
     return getCurrentUser().reauthenticateWithCredential(credential);
 };
 
-export const deleteCurrentUser = () => {
+export const deleteCurrentUser = (navigation) => {
     getCurrentUser().delete().then(() => {
-        console.log('deleted user');
+        navigation.navigate('WelcomeScreen');
     }).catch((error) => {
         console.log(error);
     });
@@ -60,9 +56,9 @@ export const updateCurrentUserPassword = (newPassword) => {
     });
 };
 
-export const signOutCurrentUser = () => {
+export const signOutCurrentUser = (navigation) => {
     getAuth().signOut().then(() => {
-        console.log('sign out user');
+        navigation.navigate('WelcomeScreen');
     }).catch((error) => {
         console.log(error);
     });
