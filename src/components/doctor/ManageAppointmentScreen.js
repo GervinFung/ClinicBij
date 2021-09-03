@@ -21,7 +21,7 @@ const ManageAppointmentScreen = ({ navigation }) => {
                 <GridView
                     image={require('../../../img/CRUD/updateAppointment.jpg')}
                     type="Update Appointment"
-                    onPress={() => onPress('UpdateAppointmentScreen')}
+                    onPress={() => onPress('CompleteAppointmentScreen')}
                 />
                 <GridView
                     image={require('../../../img/CRUD/deleteAppointment.jpg')}

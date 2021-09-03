@@ -22,6 +22,7 @@ import UpdateProfileScreen from './src/components/profile/UpdateProfileScreen';
 import DeleteProfileScreen from './src/components/profile/DeleteProfileScreen';
 
 import CreateAppointmentScreen from './src/components/appointment/CreateAppointment';
+import CompleteAppointmentScreen from './src/components/appointment/CompleteAppointment';
 import ReadAppointmentScreen from './src/components/appointment/ReadAppointment';
 import UpdateAppointmentScreen from './src/components/appointment/UpdateAppointment';
 import DeleteAppointmentScreen from './src/components/appointment/DeleteAppointment';
@@ -109,7 +110,7 @@ const DoctorStackNav = () => {
             <Stack.Screen name="DoctorHomeScreen" component={DoctorHomeScreen} options={{ title: 'Home' }}/>
             <Stack.Screen name="ManageAppointmentScreen" component={ManageAppointmentScreen} options={{ title: 'Manage Appointment' }}/>
             <Stack.Screen name="ReadAppointmentScreen" component={ReadAppointmentScreen} options={{ title: 'View Appointment' }}/>
-            <Stack.Screen name="UpdateAppointmentScreen" component={UpdateAppointmentScreen} options={{ title: 'Update Appointment' }}/>
+            <Stack.Screen name="CompleteAppointmentScreen" component={CompleteAppointmentScreen} options={{ title: 'Complete Appointment' }}/>
             <Stack.Screen name="DeleteAppointmentScreen" component={DeleteAppointmentScreen} options={{ title: 'Cancel Appointment' }}/>
             <Stack.Screen name="SetOffDateScreen" component={SetOffDateScreen} options={{ title: 'Set Off Date Screen' }}/>
             <Stack.Screen name="ReadAndDeleteOffDateScreen" component={ReadAndDeleteOffDateScreen} options={{ title: 'View Off Day' }}/>

@@ -25,7 +25,7 @@ const DoctorProfileScreen = ({ navigation }) => {
                         onPress={() => navigation.navigate('UpdateProfileScreen')}
                     />
                     <GridView
-                        image={require('../../../img/delete.jpg')}
+                        image={require('../../../img/signOut.jpg')}
                         type="Logout"
                         onPress={() => logoutProfile()}
                     />

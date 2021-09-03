@@ -30,7 +30,7 @@ const PatientProfileScreen = ({ navigation }) => {
                         onPress={() => navigation.navigate('DeleteProfileScreen')}
                     />
                     <GridView
-                        image={require('../../../img/delete.jpg')}
+                        image={require('../../../img/signOut.jpg')}
                         type="Logout"
                         onPress={() => logoutProfile()}
                     />

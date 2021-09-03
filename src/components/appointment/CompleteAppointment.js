@@ -1,20 +1,20 @@
 import React, {useState} from 'react';
 import { StyleSheet, Text, View, SafeAreaView, FlatList, Image, Alert } from 'react-native';
-import {getPendingAppointmentList, cancelPendingAppointmentList} from '../../logic/tempAppointmentList';
+import {getPendingAppointmentList, donePendingTAppointmentList} from '../../logic/tempAppointmentList';
 import {TouchableAppointmentView} from '../reusable/AppointmentView';
 import {getUser} from '../util/UserUtil';
 import {PATIENT} from '../../../App';
 
-const DeleteAppointmentScreen = ({ route, navigation }) => {
+const CompleteAppointmentScreen = ({ route, navigation }) => {
 
     const [appointmentList, setAppointmentList] = useState(getPendingAppointmentList());
 
     const onPress = (id) => {
-        Alert.alert(`Cancel Appointment ${id} Confirmation`, 'This action cannot be undone', [{
+        Alert.alert(`Complete Appointment ${id} Confirmation`, 'This action cannot be undone', [{
                 text: 'Cancel', style: 'cancel',
             }, {
                 text: 'OK', onPress: () => {
-                    setAppointmentList(cancelPendingAppointmentList(id));
+                    setAppointmentList(donePendingTAppointmentList(id));
                     informDeleted();
                 },
             },
@@ -22,7 +22,7 @@ const DeleteAppointmentScreen = ({ route, navigation }) => {
     };
 
     const informDeleted = (id) => {
-        Alert.alert('Deleted Appointment', 'Chosen Appointment Was Deleted', [{
+        Alert.alert('Completed Appointment', 'Chosen Appointment Was Completed', [{
                 text: 'Ok', onPress: () => {
                     const user = getUser();
                     navigation.navigate(user.userType.toLowerCase() === PATIENT ? 'HomeScreen' : 'DoctorHomeScreen');
@@ -100,4 +100,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default DeleteAppointmentScreen;
+export default CompleteAppointmentScreen;

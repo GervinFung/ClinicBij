@@ -90,8 +90,15 @@ export const getFilteredAppointmentList = (itemValue) => {
 
 // change to cancel from pending from appointment
 
-export const removeFromPendingAppointmentList = (id) => {
+export const cancelPendingAppointmentList = (id) => {
     getAppointmentFound(id).status = 'cancelled';
+    return getPendingAppointmentList();
+};
+
+// change to done from pending
+
+export const donePendingTAppointmentList = (id) => {
+    getAppointmentFound(id).status = 'done';
     return getPendingAppointmentList();
 };
 
