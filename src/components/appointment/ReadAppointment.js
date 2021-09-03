@@ -11,11 +11,11 @@ const ReadAppointmentScreen = ({ route, navigation }) => {
     const [appointmentList, setAppointmentList] = useState(getFilteredAppointmentList(appointmentType));
 
     useEffect(()=> {
-        (async () => {
-            const data = await getAppointmentList(getCurrentUser().uid);
-            console.log(data);
+        getAppointmentList(getCurrentUser().uid).then(data=> {
             setAppointmentList(data);
-        })();
+            console.log(data);
+        });
+        // setAppointmentList(data);
     }, []);
 
     useEffect(()=> {
