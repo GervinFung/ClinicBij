@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createStackNavigator  } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import {getUser} from './src/components/util/UserUtil';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -15,7 +16,8 @@ import MainScreen from './src/components/MainScreen';
 import HomeScreen from './src/components/HomeScreen';
 import HelpScreen from './src/components/HelpScreen';
 
-import ProfileScreen from './src/components/profile/ProfileScreen';
+import PatientProfileScreen from './src/components/profile/PatientProfileScreen';
+import DoctorProfileScreen from './src/components/profile/DoctorProfileScreen';
 import UpdateProfileScreen from './src/components/profile/UpdateProfileScreen';
 import DeleteProfileScreen from './src/components/profile/DeleteProfileScreen';
 
@@ -28,6 +30,11 @@ import UpdateDecisionScreen from './src/components/appointment/update/UpdateDeci
 import UpdatePurposeScreen from './src/components/appointment/update/UpdatePurpose';
 import UpdateDateTimeScreen from './src/components/appointment/update/UpdateDateTime';
 import UpdateDoctorScreen from './src/components/appointment/update/UpdateDoctor';
+
+import DoctorHomeScreen from './src/components/doctor/DoctorHomeScreen';
+import ManageAppointmentScreen from './src/components/doctor/ManageAppointmentScreen';
+import SetOffDateScreen from './src/components/doctor/SetOffDateScreen';
+import ReadAndDeleteOffDateScreen from './src/components/doctor/ReadAndDeleteOffDateScreen';
 
 import {hasCurrentUser, getAuth} from './src/components/util/UserUtil';
 
@@ -58,7 +65,7 @@ const UserLessStackNav = () => {
     );
 };
 
-const UserStackNav = () => {
+const PatientStackNav = () => {
     const Stack = createStackNavigator();
 
     return (
@@ -85,7 +92,31 @@ const UserStackNav = () => {
     );
 };
 
-const ProfileStackNav = () => {
+const DoctorStackNav = () => {
+    const Stack = createStackNavigator();
+
+    return (
+        <Stack.Navigator screenOptions={{
+                headerStyle: {
+                    backgroundColor: colorCode[1],
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                    fontWeight: 'bold',
+                },
+            }}
+        >
+            <Stack.Screen name="DoctorHomeScreen" component={DoctorHomeScreen} options={{ title: 'Home' }}/>
+            <Stack.Screen name="ManageAppointmentScreen" component={ManageAppointmentScreen} options={{ title: 'Manage Appointment' }}/>
+            <Stack.Screen name="SetOffDateScreen" component={SetOffDateScreen} options={{ title: 'Set Off Date Screen' }}/>
+            <Stack.Screen name="ReadAndDeleteOffDateScreen" component={ReadAndDeleteOffDateScreen} options={{ title: 'View Off Day' }}/>
+            <Stack.Screen name="ReadAppointmentScreen" component={ReadAppointmentScreen} options={{ title: 'View Appointment' }}/>
+            <Stack.Screen name="DeleteAppointmentScreen" component={DeleteAppointmentScreen} options={{ title: 'Cancel Appointment' }}/>
+        </Stack.Navigator>
+    );
+};
+
+const PatientProfileStackNav = () => {
     const Stack = createStackNavigator();
 
     return (
@@ -99,14 +130,33 @@ const ProfileStackNav = () => {
                 },
             }}
         >
-            <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{title: 'Profile'}}/>
+            <Stack.Screen name="PatientProfileScreen" component={PatientProfileScreen} options={{title: 'Profile'}}/>
             <Stack.Screen name="UpdateProfileScreen" component={UpdateProfileScreen} options={{ title: 'Update' }}/>
             <Stack.Screen name="DeleteProfileScreen" component={DeleteProfileScreen} options={{ title: 'Delete' }}/>
         </Stack.Navigator>
     );
 };
+const DoctorProfileStackNav = () => {
+    const Stack = createStackNavigator();
 
-const ProfileTabNav = () => {
+    return (
+        <Stack.Navigator screenOptions={{
+                headerStyle: {
+                    backgroundColor: colorCode[2],
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                    fontWeight: 'bold',
+                },
+            }}
+        >
+            <Stack.Screen name="DoctorProfileScreen" component={DoctorProfileScreen} options={{title: 'Profile'}}/>
+            <Stack.Screen name="UpdateProfileScreen" component={UpdateProfileScreen} options={{ title: 'Update' }}/>
+        </Stack.Navigator>
+    );
+};
+
+const PatientProfileTabNav = () => {
     const Tab = createMaterialBottomTabNavigator();
 
     return (
@@ -118,7 +168,7 @@ const ProfileTabNav = () => {
         >
             <Tab.Screen
                 name="Home"
-                component={UserStackNav}
+                component={PatientStackNav}
                 options={{
                     headerShown: false,
                     tabBarColor: colorCode[1],
@@ -128,7 +178,51 @@ const ProfileTabNav = () => {
             />
             <Tab.Screen
                 name="Profile"
-                component={ProfileStackNav}
+                component={PatientProfileStackNav}
+                options={{
+                    headerShown: false,
+                    tabBarColor: colorCode[2],
+                    tabBarLabel: 'Profile',
+                    tabBarIcon: ({ color }) => <MaterialCommunityIcons name="account" color={color} size={26} />,
+                }}
+            />
+            <Tab.Screen
+                name="Help"
+                component={HelpStackNav}
+                options={{
+                    headerShown: false,
+                    tabBarColor: colorCode[3],
+                    tabBarLabel: 'Help',
+                    tabBarIcon: ({ color }) => <MaterialCommunityIcons name="help" color={color} size={26} />,
+                }}
+            />
+        </Tab.Navigator>
+    );
+};
+
+const DoctorProfileTabNav = () => {
+    const Tab = createMaterialBottomTabNavigator();
+
+    return (
+        <Tab.Navigator
+            initialRouteName="Home"
+            shifting={true}
+            sceneAnimationEnabled={false}
+            activeColor="#FFF"
+        >
+            <Tab.Screen
+                name="Home"
+                component={DoctorStackNav}
+                options={{
+                    headerShown: false,
+                    tabBarColor: colorCode[1],
+                    tabBarLabel: 'Home',
+                    tabBarIcon: ({ color }) => <MaterialCommunityIcons name="home" color={color} size={26} />,
+                }}
+            />
+            <Tab.Screen
+                name="Profile"
+                component={DoctorProfileStackNav}
                 options={{
                     headerShown: false,
                     tabBarColor: colorCode[2],
@@ -169,12 +263,22 @@ const HelpStackNav = () => {
     );
 };
 
-const DrawerNav = () => {
+const PatientDrawerNav = () => {
     const Drawer = createDrawerNavigator();
 
     return (
         <Drawer.Navigator drawerContent={props => <DrawerContent {...props}/>}>
-            <Drawer.Screen name="BottomNav" component={ProfileTabNav} options={{ headerShown: false }}/>
+            <Drawer.Screen name="BottomNav" component={PatientProfileTabNav} options={{ headerShown: false }}/>
+        </Drawer.Navigator>
+    );
+};
+
+const DoctorDrawerNav = () => {
+    const Drawer = createDrawerNavigator();
+
+    return (
+        <Drawer.Navigator drawerContent={props => <DrawerContent {...props}/>}>
+            <Drawer.Screen name="BottomNav" component={DoctorProfileTabNav} options={{ headerShown: false }}/>
         </Drawer.Navigator>
     );
 };
@@ -190,7 +294,14 @@ const App = () => {
         setHasUser(user !== null);
     }), []);
 
-    const Show = () => hasUser ? <DrawerNav/> : <UserLessStackNav/>;
+    const Show = () => {
+        if (hasUser) {
+           const user = getUser();
+           return user.userType.toLowerCase() === PATIENT ? <PatientDrawerNav/> : <DoctorDrawerNav/>
+        }
+        return <UserLessStackNav/>;
+   }
+   
 
     return (
         <NavigationContainer>
