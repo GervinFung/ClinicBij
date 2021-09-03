@@ -5,7 +5,7 @@ import GridView from '../reusable/GridView';
 import {getCurrentUser, getAuth} from '../util/UserUtil';
 import logoutProfile from '../reusable/SignOutAlert';
 
-const ProfileScreen = ({ navigation }) => {
+const DoctorProfileScreen = ({ navigation }) => {
 
     const [currentUser, setCurrentUser] = useState(getCurrentUser());
 
@@ -23,11 +23,6 @@ const ProfileScreen = ({ navigation }) => {
                         image={require('../../../img/update.jpg')}
                         type="Update"
                         onPress={() => navigation.navigate('UpdateProfileScreen')}
-                    />
-                    <GridView
-                        image={require('../../../img/delete.jpg')}
-                        type="Delete"
-                        onPress={() => navigation.navigate('DeleteProfileScreen')}
                     />
                     <GridView
                         image={require('../../../img/delete.jpg')}
@@ -80,4 +75,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ProfileScreen;
+export default DoctorProfileScreen;

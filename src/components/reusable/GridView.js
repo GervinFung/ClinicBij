@@ -6,6 +6,7 @@ const GridView = ({onPress, image, type}) => {
     const gridStyle = StyleSheet.create({
         button: {
             borderRadius: 20,
+            margin: 20,
             marginBottom: 20,
             width: 150,
             elevation: 5,
