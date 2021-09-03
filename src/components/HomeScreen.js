@@ -1,18 +1,25 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { StyleSheet, Text, View, SafeAreaView, ScrollView } from 'react-native';
 import {getUser} from './util/UserUtil';
 import GridView from './reusable/GridView';
 
 const HomeScreen = ({ navigation }) => {
 
-    const user = getUser();
+    const [user, setUser] = useState('');
+
+    useEffect(()=> {
+        (async () => {
+            const data = await getUser();
+            setUser(data);
+        })();
+    }, []);
 
     const onPress = (destination) => navigation.navigate(destination);
 
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollView}>
-                <View style={styles.generalView}><Text style={styles.title}>Welcome {user.fullName}</Text></View>
+                <View style={styles.generalView}><Text style={styles.title}>Welcome {user.username}</Text></View>
                 <View style={styles.generalView}><Text style={styles.subTitle}>What would you like to do today?</Text></View>
                 <View style={styles.menuContainer}>
                     <GridView
