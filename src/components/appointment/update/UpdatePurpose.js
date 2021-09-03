@@ -4,6 +4,8 @@ import { StyleSheet, Text, TextInput, View, KeyboardAvoidingView, Image, Alert, 
 import {updatePurposeOfAppointment} from '../../../logic/tempAppointmentList';
 import TouchableButton, {buttonStyleDict} from '../../reusable/TouchableButton';
 
+import alertSuccess from './UpdateSuccessAlert';
+
 const PurposeTextView = ({type, purpose}) => {
 
     const purposeStyle = StyleSheet.create({
@@ -40,7 +42,7 @@ const UpdatePurposeScreen = ({ route, navigation }) => {
             }, {
                 text: 'Yes', onPress: () => {
                     updatePurposeOfAppointment(undefined, id, newPurpose);
-                    navigation.navigate('UpdateAppointmentScreen');
+                    alertSuccess(navigation);
                 },
             },
         ]);

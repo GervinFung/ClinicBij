@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, SafeAreaView, FlatList, Image, Alert } from 'react-native';
 import {getOffDayList, getDefaultOffDay, removeFromOffDayList} from '../../logic/tempOffDayList';
 import {TouchableOffDayView} from '../reusable/OffDayView';
-import HorinzontalLine from '../reusable/HorizontalLine';
 
 const ReadAndDeleteOffDateScreen = ({ navigation }) => {
 
@@ -16,9 +15,9 @@ const ReadAndDeleteOffDateScreen = ({ navigation }) => {
 
     const onPress = (id) => {
         Alert.alert(`Delete Off Day Period ${id} Confirmation`, 'This action cannot be undone', [{
-                text: 'Delete', style: 'cancel',
+                text: 'Cancel', style: 'cancel',
             }, {
-                text: 'OK', onPress: () => {
+                text: 'Delete', onPress: () => {
                     setOffDayList(removeFromOffDayList(id));
                 },
             },
@@ -55,9 +54,8 @@ const ReadAndDeleteOffDateScreen = ({ navigation }) => {
             <View style={styles.imageTextView}>
                 <Image source={require('../../../img/doctor/readOffDate.jpg')} style={styles.image}/>
                 <Text style={styles.text}>View Off Date</Text>
-                <Text style={styles.OffDay}>Weekly off day: {defaultOffDay}</Text>
-                <HorinzontalLine/>
-                <Text style={styles.OffDay}>Specific Off Days</Text>
+                <Text style={styles.offDay}>Weekly off day: {defaultOffDay}</Text>
+                <Text style={styles.offDay}>Specific Off Days</Text>
             </View>
             <GetFlatList/>
         </SafeAreaView>
@@ -65,6 +63,14 @@ const ReadAndDeleteOffDateScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+    noAppointmentMessage: {
+        fontSize: 25,
+        textAlign: 'center',
+    },
+    centerView: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     generalView: {
         padding: 4,
         paddingBottom: 7,
@@ -105,7 +111,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingBottom: 15,
     },
-    OffDay: {
+    offDay: {
         marginTop: 20,
         fontWeight: 'bold',
         fontSize: 20,

@@ -28,11 +28,9 @@ const UpdateAppointmentScreen = ({ route, navigation }) => {
                         status={appointment.status}
                         date={appointment.date}
                         time={appointment.time}
-                        onPress={() => {
-                            navigation.navigate('UpdateDecisionScreen', {
-                                appointment: appointment,
-                            });
-                        }}
+                        onPress={() => navigation.navigate('UpdateDecisionScreen', {
+                            appointment: appointment,
+                        })}
                     />
                 )}
             />

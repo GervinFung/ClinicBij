@@ -7,6 +7,8 @@ import {updateDoctorOfAppointment} from '../../../logic/tempAppointmentList';
 import {getAvailableDoctor} from '../../../logic/tempDoctorList';
 import TouchableButton, {buttonStyleDict} from '../../reusable/TouchableButton';
 
+import alertSuccess from './UpdateSuccessAlert';
+
 const ChooseDoctorView = ({doctorList, selectedDoctor, setSelectedDoctor}) => {
 
     const doctorImageList = [require('../../../../img/doctor/doctor1.jpg'), require('../../../../img/doctor/doctor2.jpg'), require('../../../../img/doctor/doctor3.jpg')];
@@ -92,7 +94,7 @@ const UpdateDoctorScreen = ({ route, navigation }) => {
             }, {
                 text: 'Yes', onPress: () => {
                     updateDoctorOfAppointment(undefined, id, selectedDoctor);
-                    navigation.navigate('UpdateAppointmentScreen');
+                    alertSuccess(navigation);
                 },
             },
         ]);

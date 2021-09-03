@@ -1,32 +1,23 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, SafeAreaView, FlatList, Image } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
-import {getFilteredAppointmentList, getOptionList, getAppointmentList} from '../../logic/tempAppointmentList';
+import {getFilteredAppointmentList, getOptionList} from '../../logic/tempAppointmentList';
 import {UntouchableAppointmentView} from '../reusable/AppointmentView';
-import {getCurrentUser} from '../util/UserUtil';
 
 const ReadAppointmentScreen = ({ route, navigation }) => {
 
     const [appointmentType, setAppointmentType] = useState('All');
     const [appointmentList, setAppointmentList] = useState(getFilteredAppointmentList(appointmentType));
 
-    useEffect(()=> {
-        (async () => {
-            const data = await getAppointmentList(getCurrentUser().uid);
-            console.log(data);
-            setAppointmentList(data);
-        })();
-    }, []);
-
-    useEffect(()=> {
-        setAppointmentList(appointmentType);
-    }, [appointmentType]);
-
     const GetFilterList = () => {
         return getOptionList().map((option, index) => {
             return <Picker.Item key={index + option} value={option} label={option} />;
         });
     };
+
+    useEffect(() => {
+        setAppointmentList(getFilteredAppointmentList(appointmentType));
+    }, [appointmentType]);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -48,14 +39,14 @@ const ReadAppointmentScreen = ({ route, navigation }) => {
                 data={appointmentList}
                 renderItem={({ item: appointment, separators }) => (
                     <UntouchableAppointmentView
-                        index={appointment.appointment_id}
+                        index={appointment.id}
                         onShowUnderlay={separators.highlight}
                         onHideUnderlay={separators.unhighlight}
-                        doctor={appointment.username}
+                        doctor={appointment.doctor}
                         purpose={appointment.purpose}
                         status={appointment.status}
-                        date={appointment.appointment_dateTime}
-                        time={appointment.appointment_dateTime}
+                        date={appointment.date}
+                        time={appointment.time}
                     />
                 )}
             />

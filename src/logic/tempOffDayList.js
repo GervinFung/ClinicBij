@@ -23,9 +23,10 @@ let offDayList = [{
     doctor:'Doctor Bonab',
     startDate: '21/10/2020',
     endDate: '25/9/2020',
-}, 
+},
 ];
-var doctorDefaultOffDay = 'Monday'
+
+let doctorDefaultOffDay = 'Monday';
 
 export const removeFromOffDayList = (id) => {
     offDayList = offDayList.filter((offDay) => {

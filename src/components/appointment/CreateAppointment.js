@@ -8,6 +8,8 @@ import {addToAppointmentList} from '../../logic/tempAppointmentList';
 import TouchableButton, {buttonStyleDict} from '../reusable/TouchableButton';
 import HorizontalLine from '../reusable/HorizontalLine';
 
+import {stringIsEmpty} from '../../logic/nullOrUndefinedInput';
+
 const ChooseAppointmentView = ({setAppointmentDate, appointmentDate}) => {
 
     const calendarStyle = StyleSheet.create({
@@ -244,14 +246,14 @@ const CreateAppointmentScreen = ({ route, navigation }) => {
     };
 
     const GetInvalidMessage = () => {
-        if (invalidMessage.length !== 0) {
-            return (
-                <View>
-                    <Text style={styles.inputInvalidText}>{invalidMessage.join('\n')}</Text>
-                </View>
-            );
+        if (stringIsEmpty(invalidMessage)) {
+            return null;
         }
-        return null;
+        return (
+            <View>
+                <Text style={styles.inputInvalidText}>{invalidMessage.join('\n')}</Text>
+            </View>
+        );
     };
 
     const confirmAppointmentAlert = () => {
@@ -260,7 +262,16 @@ const CreateAppointmentScreen = ({ route, navigation }) => {
             }, {
                 text: 'Yes', onPress: () => {
                     addToAppointmentList(undefined, selectedDoctor, appointmentDate, appointmentTime, purpose);
-                    navigation.navigate('ReadAppointmentScreen');
+                    informCreated();
+                },
+            },
+        ]);
+    };
+
+    const informCreated = () => {
+        Alert.alert('Added New Appointment', 'A New Appointment Has Been Created',[{
+                text: 'Ok', onPress: () => {
+                    navigation.navigate('HomeScreen');
                 },
             },
         ]);
@@ -303,7 +314,7 @@ const CreateAppointmentScreen = ({ route, navigation }) => {
                 <TouchableButton
                     onPress={() => {
                         updateInvalidMessage();
-                        if (invalidMessage.length === 0) {
+                        if (stringIsEmpty(invalidMessage)) {
                             confirmAppointmentAlert();
                         }
                     }}

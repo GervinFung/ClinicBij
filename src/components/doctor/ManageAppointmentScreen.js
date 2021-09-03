@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image } from 'react-native';
 import {getUser} from '../util/UserUtil';
 
-const AppointmentView = (props) => {
+const AppointmentView = ({onPress, image, type}) => {
 
     const appointmentStyle = StyleSheet.create({
         button: {
@@ -36,10 +36,10 @@ const AppointmentView = (props) => {
     });
 
     return (
-        <TouchableOpacity style={appointmentStyle.button} underlayColor={'#F4B65F'} onPress={props.onPress}>
+        <TouchableOpacity style={appointmentStyle.button} underlayColor={'#F4B65F'} onPress={onPress}>
             <View style={appointmentStyle.imageTextView}>
-                <Image source={props.image} style={appointmentStyle.image}/>
-                <Text style={appointmentStyle.text}>{props.type} Appointment</Text>
+                <Image source={image} style={appointmentStyle.image}/>
+                <Text style={appointmentStyle.text}>{type} Appointment</Text>
             </View>
         </TouchableOpacity>
     );
@@ -61,13 +61,6 @@ const ManageAppointmentScreen = ({ navigation }) => {
                         });
                     }}
                 />
-                {/* <AppointmentView
-                    image={require('../../../img/CRUD/updateAppointment.jpg')}
-                    type="Update"
-                    onPress={() => {
-                        navigation.navigate('UpdateAppointmentScreen');
-                    }}
-                /> */}
                 <AppointmentView
                     image={require('../../../img/CRUD/deleteAppointment.jpg')}
                     type="Cancel"

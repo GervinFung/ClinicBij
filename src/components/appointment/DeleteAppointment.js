@@ -13,7 +13,16 @@ const DeleteAppointmentScreen = ({ route, navigation }) => {
             }, {
                 text: 'OK', onPress: () => {
                     setAppointmentList(removeFromPendingAppointmentList(id));
-                    navigation.navigate('ReadAppointmentScreen');
+                    informDeleted();
+                },
+            },
+        ]);
+    };
+
+    const informDeleted = (id) => {
+        Alert.alert('Deleted Appointment', 'Chosen Appointment Was Deleted', [{
+                text: 'Ok', onPress: () => {
+                    navigation.navigate('HomeScreen');
                 },
             },
         ]);

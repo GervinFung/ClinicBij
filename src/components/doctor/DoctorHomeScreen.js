@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image } from 'react-native';
 import {getUser} from '../util/UserUtil';
 
-const DoctorHomeScreenView = (props) => {
+const DoctorHomeScreenView = ({onPress, image, type}) => {
 
     const appointmentStyle = StyleSheet.create({
         button: {
@@ -37,10 +37,10 @@ const DoctorHomeScreenView = (props) => {
     });
 
     return (
-        <TouchableOpacity style={appointmentStyle.button} underlayColor={'#F4B65F'} onPress={props.onPress}>
+        <TouchableOpacity style={appointmentStyle.button} underlayColor={'#F4B65F'} onPress={onPress}>
             <View style={appointmentStyle.imageTextView}>
-                <Image source={props.image} style={appointmentStyle.image}/>
-                <Text style={appointmentStyle.text}>{props.type}</Text>
+                <Image source={image} style={appointmentStyle.image}/>
+                <Text style={appointmentStyle.text}>{type}</Text>
             </View>
         </TouchableOpacity>
     );
@@ -58,23 +58,17 @@ const DoctorHomeScreen = ({ navigation }) => {
                 <DoctorHomeScreenView
                     image={require('../../../img/doctor/offDay.jpg')}
                     type="Set Your Off Date"
-                    onPress={() => {
-                        navigation.navigate('SetOffDateScreen');
-                    }}
+                    onPress={() => navigation.navigate('SetOffDateScreen')}
                 />
                 <DoctorHomeScreenView
                     image={require('../../../img/doctor/readOffDate.jpg')}
                     type="View and Delete Off Days"
-                    onPress={() => {
-                        navigation.navigate('ReadAndDeleteOffDateScreen');
-                    }}
+                    onPress={() => navigation.navigate('ReadAndDeleteOffDateScreen')}
                 />
                 <DoctorHomeScreenView
                     image={require('../../../img/CRUD/readAppointment.jpg')}
                     type="Manage Appointment"
-                    onPress={() => {
-                        navigation.navigate('ManageAppointmentScreen');
-                    }}
+                    onPress={() => navigation.navigate('ManageAppointmentScreen')}
                 />
             </View>
         </SafeAreaView>

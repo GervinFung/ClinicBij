@@ -1,8 +1,8 @@
-import React, { useState, } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, KeyboardAvoidingView, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import {Picker} from '@react-native-picker/picker';
-import HorinzontalLine from '../reusable/HorizontalLine';
+import HorizontalLine from '../reusable/HorizontalLine';
 import {addOffDayList, setChangedDefaultOffDay} from '../../logic/tempOffDayList';
 
 const ChooseOffDayPeriodView = ({setStartDate, startDate, setEndDate, endDate, NONE}) => {
@@ -45,12 +45,12 @@ const ChooseOffDayPeriodView = ({setStartDate, startDate, setEndDate, endDate, N
     const onDateChange = (date, type) => {
         //function to handle the date change
         if (type === 'START_DATE') {
-            setStartDate(processDateToString(date));  
+            setStartDate(processDateToString(date));
         } else {
-            setEndDate(date === null ? NONE :processDateToString(date));
+            setEndDate(date === null ? NONE : processDateToString(date));
         }
       };
-    
+
     return (
         <View>
             <View style={calendarStyle.calendarView}>
@@ -146,21 +146,17 @@ const SetOffDateScreen = ({ navigation }) => {
     const [defaultOffDay, setDefaultOffDay] = useState(NONE);
     const [startDate, setStartDate] = useState(NONE);
     const [endDate, setEndDate] = useState(NONE);
-  
 
-    // const determineInputBoxColor = () => {
-    //     return appointmentDate === null ? styles.inactiveInputBox : styles.activeInputBox;
-    // }
     const confirmAddSpecificOffDay = () => {
         if (startDate === NONE || endDate === NONE){
             Alert.alert(
                 'Error', 'Range of the specific off days\n not specified, please try again.', [{
                         text: 'Ok', style: 'cancel',
-                    }, 
+                    },
                 ]
             );
         } else {
-            Alert.alert(`New Off Day Period created`, '', [{
+            Alert.alert('New Off Day Period created', '', [{
             }, {
                 text: 'OK', onPress: () => {
                     setChangedDefaultOffDay(defaultOffDay);
@@ -170,7 +166,7 @@ const SetOffDateScreen = ({ navigation }) => {
             },
         ]);
         }
-        
+
     };
 
     return (
@@ -180,13 +176,12 @@ const SetOffDateScreen = ({ navigation }) => {
                     <Image source={require('../../../img/doctor/setoffday.jpg')} style={styles.image}/>
                     <Text style={styles.text}>Set Doctor Off Day</Text>
                 </View>
-                <HorinzontalLine/>
+                <HorizontalLine/>
                 <DefaultOffDayPickerView
                     setDefaultOffDay={setDefaultOffDay}
                     defaultOffDay={defaultOffDay}
                     NONE={NONE}
                 />
-                <HorinzontalLine/>
                 <ChooseOffDayPeriodView
                     setStartDate={setStartDate}
                     startDate={startDate}
@@ -194,7 +189,7 @@ const SetOffDateScreen = ({ navigation }) => {
                     endDate={endDate}
                     NONE={NONE}
                 />
-                <HorinzontalLine/>
+                <HorizontalLine/>
                 <View style={styles.addOffDayView}>
                     <TouchableOpacity
                         style={styles.addOffDayButton}

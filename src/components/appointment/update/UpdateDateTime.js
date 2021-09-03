@@ -8,6 +8,8 @@ import {updateDateTimeOfAppointment} from '../../../logic/tempAppointmentList';
 import {getAvailableDoctor} from '../../../logic/tempDoctorList';
 import TouchableButton, {buttonStyleDict} from '../../reusable/TouchableButton';
 
+import alertSuccess from './UpdateSuccessAlert';
+
 const ChooseAppointmentView = ({setAppointmentDate, appointmentDate}) => {
 
     const calendarStyle = StyleSheet.create({
@@ -182,7 +184,7 @@ const UpdateDateTimeScreen = ({ route, navigation }) => {
             }, {
                 text: 'Yes', onPress: () => {
                     updateDateTimeOfAppointment(undefined, id, appointmentDate, appointmentTime);
-                    navigation.navigate('UpdateAppointmentScreen');
+                    alertSuccess(navigation);
                 },
             },
         ]);

@@ -297,11 +297,11 @@ const App = () => {
     const Show = () => {
         if (hasUser) {
            const user = getUser();
-           return user.userType.toLowerCase() === PATIENT ? <PatientDrawerNav/> : <DoctorDrawerNav/>
+           return user.userType.toLowerCase() === PATIENT ? <PatientDrawerNav/> : <DoctorDrawerNav/>;
         }
         return <UserLessStackNav/>;
-   }
-   
+   };
+
 
     return (
         <NavigationContainer>
