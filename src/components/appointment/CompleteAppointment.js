@@ -63,7 +63,7 @@ const CompleteAppointmentScreen = ({ route, navigation }) => {
         <SafeAreaView style={styles.container}>
             <View style={styles.imageTextView}>
                 <Image source={require('../../../img/CRUD/deleteAppointment.jpg')} style={styles.image}/>
-                <Text style={styles.text}>Cancel Appointment</Text>
+                <Text style={styles.text}>Complete Appointment</Text>
             </View>
             <GetFlatList/>
         </SafeAreaView>

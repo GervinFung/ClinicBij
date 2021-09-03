@@ -8,6 +8,7 @@ import {getUser, getCredential, updateCurrentUserEmail, updateCurrentUserPasswor
 import {ConfirmPasswordTextInput, RegistryTextInput, PasswordTextInput, CurrentPasswordTextInput} from '../reusable/TextInput';
 import TouchableButton, {buttonStyleDict} from '../reusable/TouchableButton';
 import HorizontalLine from '../reusable/HorizontalLine';
+import {PATIENT} from '../../../App';
 
 const UpdateProfileScreen = ({ navigation }) => {
 
@@ -30,7 +31,9 @@ const UpdateProfileScreen = ({ navigation }) => {
 
     const updatedAccountAlert = () => {
         Alert.alert('Account successfully updated', 'Your account has been updated', [{
-                text: 'OK', onPress: () => navigation.navigate('ProfileScreen'),
+                text: 'OK', onPress: () => {
+                    navigation.navigate(user.userType === PATIENT ? 'PatientProfileTabNav' : 'DoctorProfileTabNav');
+                }
             },
         ]);
     };
