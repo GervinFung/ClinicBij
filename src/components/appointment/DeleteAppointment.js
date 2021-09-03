@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import { StyleSheet, Text, View, SafeAreaView, FlatList, Image, Alert } from 'react-native';
 import {getPendingAppointmentList, removeFromPendingAppointmentList} from '../../logic/tempAppointmentList';
 import {TouchableAppointmentView} from '../reusable/AppointmentView';
+import {getUser} from '../util/UserUtil';
+import {PATIENT} from '../../../App';
 
 const DeleteAppointmentScreen = ({ route, navigation }) => {
 
@@ -22,7 +24,8 @@ const DeleteAppointmentScreen = ({ route, navigation }) => {
     const informDeleted = (id) => {
         Alert.alert('Deleted Appointment', 'Chosen Appointment Was Deleted', [{
                 text: 'Ok', onPress: () => {
-                    navigation.navigate('HomeScreen');
+                    const user = getUser();
+                    navigation.navigate(user.userType.toLowerCase() === PATIENT ? 'HomeScreen' : 'DoctorHomeScreen');
                 },
             },
         ]);

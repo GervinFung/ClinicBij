@@ -108,10 +108,11 @@ const DoctorStackNav = () => {
         >
             <Stack.Screen name="DoctorHomeScreen" component={DoctorHomeScreen} options={{ title: 'Home' }}/>
             <Stack.Screen name="ManageAppointmentScreen" component={ManageAppointmentScreen} options={{ title: 'Manage Appointment' }}/>
+            <Stack.Screen name="ReadAppointmentScreen" component={ReadAppointmentScreen} options={{ title: 'View Appointment' }}/>
+            <Stack.Screen name="UpdateAppointmentScreen" component={UpdateAppointmentScreen} options={{ title: 'Update Appointment' }}/>
+            <Stack.Screen name="DeleteAppointmentScreen" component={DeleteAppointmentScreen} options={{ title: 'Cancel Appointment' }}/>
             <Stack.Screen name="SetOffDateScreen" component={SetOffDateScreen} options={{ title: 'Set Off Date Screen' }}/>
             <Stack.Screen name="ReadAndDeleteOffDateScreen" component={ReadAndDeleteOffDateScreen} options={{ title: 'View Off Day' }}/>
-            <Stack.Screen name="ReadAppointmentScreen" component={ReadAppointmentScreen} options={{ title: 'View Appointment' }}/>
-            <Stack.Screen name="DeleteAppointmentScreen" component={DeleteAppointmentScreen} options={{ title: 'Cancel Appointment' }}/>
         </Stack.Navigator>
     );
 };

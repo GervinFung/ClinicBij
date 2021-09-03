@@ -23,6 +23,7 @@ const ReadAndDeleteOffDateScreen = ({ navigation }) => {
             },
         ]);
     };
+
     const GetFlatList = () => {
         if (offDayList.length === 0) {
             return (
