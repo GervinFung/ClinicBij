@@ -1,7 +1,7 @@
 const each = require('jest-each').default;
 
 import {emailTaken} from '../../src/logic/tempUserList';
-import {checkUsernameMinLength} from '../../src/logic/fullName';
+import {checkFullNameMinLength} from '../../src/logic/fullName';
 
 describe('test full name minimum length', () => {
     each([
@@ -10,7 +10,7 @@ describe('test full name minimum length', () => {
         ['Wong Chim Ciw', true],
         ['Lo', false],
     ]).it('when the full name is %s', (fullName, expected) => {
-        expect(checkUsernameMinLength(fullName)).toBe(expected);
+        expect(checkFullNameMinLength(fullName)).toBe(expected);
     });
 });
 
@@ -20,7 +20,7 @@ describe('test email taken exists', () => {
         ['NgKheeLong123!@gmail.com', true],
         ['KohRongSoon123!@gmail.com', true],
         ['WongYeeJing123!@gmail.com', true],
-        ['GervinFungDaXuen123!@gmail.com', true],
+        ['gervinfungdaxuen@gmail.com', true],
     ]).it('when the email taken is %s', (email, expected) => {
         expect(emailTaken(email)).toBe(expected);
     });

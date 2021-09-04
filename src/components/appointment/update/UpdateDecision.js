@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image } from 'react-native';
 
-const AppointmentTypeView = (props) => {
+const AppointmentTypeView = ({onPress, image, type}) => {
 
     const appointmentStyle = StyleSheet.create({
         button: {
@@ -34,10 +34,10 @@ const AppointmentTypeView = (props) => {
     });
 
     return (
-        <TouchableOpacity style={appointmentStyle.button} underlayColor={'#F4B65F'} onPress={props.onPress}>
+        <TouchableOpacity style={appointmentStyle.button} underlayColor={'#F4B65F'} onPress={onPress}>
             <View style={appointmentStyle.imageTextView}>
-                <Image source={props.image} style={appointmentStyle.image}/>
-                <Text style={appointmentStyle.text}>{props.type}</Text>
+                <Image source={image} style={appointmentStyle.image}/>
+                <Text style={appointmentStyle.text}>{type}</Text>
             </View>
         </TouchableOpacity>
     );

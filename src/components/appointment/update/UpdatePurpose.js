@@ -1,14 +1,16 @@
-import React, { useState, useRef } from 'react';
-import { StyleSheet, Text, TextInput, View, TouchableOpacity, KeyboardAvoidingView, Image, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TextInput, View, KeyboardAvoidingView, Image, Alert, ScrollView } from 'react-native';
 
 import {updatePurposeOfAppointment} from '../../../logic/tempAppointmentList';
+import TouchableButton, {buttonStyleDict} from '../../reusable/TouchableButton';
 
-const PurposeTextView = (props) => {
+import alertSuccess from './UpdateSuccessAlert';
+
+const PurposeTextView = ({type, purpose}) => {
 
     const purposeStyle = StyleSheet.create({
         currentPurposeView: {
             width: '100%',
-            backgroundColor: '#FEFEFE',
             alignItems: 'center',
             justifyContent: 'center',
             marginBottom: 25,
@@ -21,8 +23,8 @@ const PurposeTextView = (props) => {
 
     return (
         <View style={purposeStyle.currentPurposeView}>
-            <Text style={styles.purpose}>Your {props.type} purpose of appointment</Text>
-            <Text style={[styles.purpose, purposeStyle.boldText]}>{props.purpose}</Text>
+            <Text style={styles.purpose}>Your {type} purpose of appointment</Text>
+            <Text style={[styles.purpose, purposeStyle.boldText]}>{purpose}</Text>
         </View>
     );
 };
@@ -33,69 +35,65 @@ const UpdatePurposeScreen = ({ route, navigation }) => {
 
     const [newPurpose, setNewPurpose] = useState('');
 
-    const updateButton = useRef(TouchableOpacity);
-
     const confirmUpdatePurpose =  () => {
 
-        Alert.alert(
-            'Update Appointment Purpose Confirmation', 'Are you sure new purpose is correct?\nYou can always change the information later should you need to', [{
-                    text: 'No', style: 'cancel',
-                }, {
-                    text: 'Yes', onPress: () => {
-                        updatePurposeOfAppointment(undefined, id, newPurpose);
-                        navigation.navigate('UpdateAppointmentScreen');
-                    },
+        Alert.alert('Update Appointment Purpose Confirmation', 'Are you sure new purpose is correct?\nYou can always change the information later should you need to', [{
+                text: 'No', style: 'cancel',
+            }, {
+                text: 'Yes', onPress: () => {
+                    updatePurposeOfAppointment(undefined, id, newPurpose);
+                    alertSuccess(navigation);
                 },
-            ]
-        );
+            },
+        ]);
     };
 
     return (
         <KeyboardAvoidingView style={styles.container}>
-            <View style={styles.generalView}>
-                <Image source={require('../../../../img/update/changeDoctor.jpg')} style={styles.image}/>
-            </View>
-            <PurposeTextView
-                type="current"
-                purpose={purpose}
-            />
-            <View style={styles.generalView}>
-                <Text style={styles.purpose}>Update of appointment</Text>
-                <TextInput
-                    value={newPurpose}
-                    style={styles.inputBox}
-                    placeholder="Purpose of Appointment"
-                    keyboardType="ascii-capable"
-                    onChangeText={setNewPurpose}
-                    onSubmitEditing={() => updateButton.current.focus()}
-                />
+            <ScrollView contentContainerStyle={styles.scrollView}>
+                <View style={styles.generalView}>
+                    <Image source={require('../../../../img/update/changeDoctor.jpg')} style={styles.image}/>
+                </View>
                 <PurposeTextView
-                    type="new"
-                    purpose={newPurpose}
+                    type="current"
+                    purpose={purpose}
                 />
-            </View>
-            <View style={styles.generalView}>
-                <TouchableOpacity
-                    ref={updateButton}
-                    style={styles.confirmButton}
+                <View style={styles.generalView}>
+                    <Text style={styles.purpose}>Update of appointment</Text>
+                    <TextInput
+                        value={newPurpose}
+                        style={styles.inputBox}
+                        placeholder="Purpose of Appointment"
+                        keyboardType="ascii-capable"
+                        onChangeText={setNewPurpose}
+                    />
+                    <PurposeTextView
+                        type="new"
+                        purpose={newPurpose}
+                    />
+                </View>
+                <TouchableButton
                     onPress={confirmUpdatePurpose}
-                >
-                    <Text style={styles.confirmText}>Update Appointment</Text>
-                </TouchableOpacity>
-            </View>
+                    text="Update Appointment"
+                    buttonStyle={buttonStyleDict.GREEN}
+                />
+            </ScrollView>
         </KeyboardAvoidingView>
     );
 };
 
 const styles = StyleSheet.create({
+    scrollView: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        flex: 1,
+    },
     container: {
         padding: 4,
         paddingBottom: 7,
-        width: '100%',
         flex: 1,
         backgroundColor: '#FEFEFE',
-        alignItems: 'center',
-        justifyContent: 'center',
     },
     generalView: {
         width: '100%',
@@ -113,22 +111,6 @@ const styles = StyleSheet.create({
     },
     text: {
         textAlign: 'center',
-    },
-    confirmButton: {
-        backgroundColor: '#059862',
-        width: '80%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingBottom: 10,
-        paddingTop: 10,
-        paddingLeft: 10,
-        paddingRight: 10,
-        borderRadius: 15,
-        margin: 5,
-    },
-    confirmText: {
-        color: '#FFFFFFE3',
-        fontSize: 17,
     },
     inputBox: {
         // backgroundColor: '#121212',

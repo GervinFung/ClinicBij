@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { StyleSheet, Text, TextInput, View, TouchableOpacity, KeyboardAvoidingView, Image } from 'react-native';
-import {getUserFromUserList} from '../logic/tempUserList';
-import auth from '@react-native-firebase/auth';
-import { ADMIN, USER } from '../../App';
+import React, { useState, useRef } from 'react';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity, KeyboardAvoidingView, Image, ScrollView } from 'react-native';
+import { DOCTOR, PATIENT } from '../../App';
+import {getAuth} from './util/UserUtil';
+import TouchableButton, {buttonStyleDict} from './reusable/TouchableButton';
 
 const LoginScreen = ({ route, navigation }) => {
 
@@ -11,107 +11,102 @@ const LoginScreen = ({ route, navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [inputInvalid, setInputInvalid] = useState(false);
-    const [user, setUser] = useState({});
-    // maybe user can use props, pass down to another components
+    const [inputInvalidMsg, setInputInvalidMsg] = useState('');
 
     const emailInput = useRef(TextInput);
     const passwordInput = useRef(TextInput);
-    const loginButton = useRef(TouchableOpacity);
-
-    useEffect(() => {   
-            setUser(auth().currentUser);                
-    }, []);
 
     const loginButtonPressed = () => {
-        auth().signInWithEmailAndPassword(email, password)
-        .then(() => {
-            alert('Welcome!')
-            setUser(auth().currentUser);
-            navigation.navigate('HomeScreen', {
-                user: {email: 'NgKheeLong123!@gmail.com', password: 'NgKheeLong123!@#'},
-            });       
-        })
-        .catch(error => {
+        getAuth().signInWithEmailAndPassword(email, password).then(() => {
+            setInputInvalid(false);
+            setInputInvalidMsg('');
+        }).catch(error => {
+            setInputInvalid(true);
             if (error.code === 'auth/invalid-email') {
-                console.log('Invalid email entered! Please try again.');
+                setInputInvalidMsg('Invalid email entered!');
             }
-            if(error.code === 'auth/user-not-found') {
-                console.log('Invalid email/password entered! Please try again.');
+            if (error.code === 'auth/user-not-found') {
+                setInputInvalidMsg('User not found!');
             }
-            if(error.code === 'auth/wrong-password') {
-                console.log('Invalid password entered! Please try again.');
+            if (error.code === 'auth/wrong-password') {
+                setInputInvalidMsg('Invalid password entered!');
             }
-           
-            console.error(error);
         });
-        
     };
 
-    const showInputInvalidText = () => {
+    const ShowInputInvalidText = () => {
         if (inputInvalid) {
             return (
                 <View style={styles.inputInvalid}>
-                    <Text style={styles.inputInvalidText}>Invalid email/password</Text>
-                    <Text style={styles.inputInvalidText}>Please try again</Text>
+                    <Text style={styles.inputInvalidText}>{inputInvalidMsg} Please try again</Text>
                 </View>
             );
         }
+        return null;
     };
 
     const getImage = () => {
-        if (userType === ADMIN.toLowerCase()) {
-            return require('../../img/admin.jpg');
-        } else if (userType === USER.toLowerCase()) {
-            return require('../../img/user.jpg');
+        if (userType.toLowerCase() === DOCTOR.toLowerCase()) {
+            return require('../../img/doctor.jpg');
+        } else if (userType.toLowerCase() === PATIENT.toLowerCase()) {
+            return require('../../img/patient.jpg');
         }
-        throw new Error('userType can only be ADMIN or USER only');
+        throw new Error('userType can only be DOCTOR or PATIENT only');
     };
 
     return (
         <KeyboardAvoidingView style={styles.container}>
-            <View style={styles.generalView}>
-                <Image style={styles.image} source={getImage()}/>
-                <Text style={styles.title}>{userType.toUpperCase()}</Text>
-            </View>
-            <View style={[styles.generalView, styles.inputView]}>
-                <TextInput
-                    ref={emailInput}
-                    style={styles.inputBox}
-                    placeholder="Email"
-                    onChangeText={(text) => setEmail(text)}
-                    onSubmitEditing={() => passwordInput.current.focus()}
-                />
-                <TextInput
-                    ref={passwordInput}
-                    secureTextEntry={true}
-                    style={styles.inputBox}
-                    placeholder="Password"
-                    onChangeText={(text) => setPassword(text)}
-                    onSubmitEditing={() => loginButton.current.focus()}
-                />
+            <ScrollView contentContainerStyle={styles.scrollView}>
                 <View style={styles.generalView}>
-                    {showInputInvalidText()}
+                    <Image style={styles.image} source={getImage()}/>
+                    <Text style={styles.title}>{userType.toUpperCase()}</Text>
                 </View>
-            </View>
-            <View style={[styles.generalView]}>
-                <TouchableOpacity
-                    onPress={() => navigation.navigate('RegistryScreen')}
-                >
-                    <Text style={styles.signupText}>Don't have an account? Signup</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    ref={loginButton}
-                    style={styles.loginButton}
-                    onPress={() => loginButtonPressed()}
-                >
-                    <Text style={styles.loginText}>LOGIN</Text>
-                </TouchableOpacity>
-            </View>
+                <View style={[styles.generalView, styles.inputView]}>
+                    <TextInput
+                        ref={emailInput}
+                        style={styles.inputBox}
+                        placeholder="Email"
+                        onChangeText={(text) => setEmail(text)}
+                        onSubmitEditing={() => passwordInput.current.focus()}
+                    />
+                    <TextInput
+                        ref={passwordInput}
+                        secureTextEntry={true}
+                        style={styles.inputBox}
+                        placeholder="Password"
+                        onChangeText={(text) => setPassword(text)}
+                    />
+                    <View style={styles.generalView}><ShowInputInvalidText/></View>
+                </View>
+                <View style={[styles.generalView]}>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('RegistryScreen')}
+                    ><Text style={styles.signupText}>Don't have an account? Signup</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('ForgotPasswordScreen', {
+                            userType: userType,
+                        })}
+                    ><Text style={styles.forgotPassword}>Forgot Password</Text>
+                    </TouchableOpacity>
+                    <TouchableButton
+                        onPress={loginButtonPressed}
+                        text="Login"
+                        buttonStyle={buttonStyleDict.GREEN}
+                    />
+                </View>
+            </ScrollView>
         </KeyboardAvoidingView>
     );
 };
 
 const styles = StyleSheet.create({
+    scrollView: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        flex: 1,
+    },
     generalView: {
         padding: 4,
         paddingBottom: 10,
@@ -120,11 +115,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     container: {
-        width: '100%',
         flex: 1,
         backgroundColor: '#FEFEFE',
-        alignItems: 'center',
-        justifyContent: 'center',
     },
     title: {
         color: '#2196F3',
@@ -140,7 +132,7 @@ const styles = StyleSheet.create({
         // backgroundColor: '#121212',
         borderColor: '#121212',
         width: '80%',
-        color: '#000',//'#FFFFFF99',
+        color: '#000',
         borderWidth: 1,
         paddingBottom: 10,
         paddingTop: 10,
@@ -161,26 +153,15 @@ const styles = StyleSheet.create({
         color: '#990000',
         fontSize: 14,
     },
-    loginButton: {
-        backgroundColor: '#059862',
-        width: '80%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingBottom: 10,
-        paddingTop: 10,
-        paddingLeft: 10,
-        paddingRight: 10,
-        borderRadius: 15,
-        margin: 5,
-    },
-    loginText: {
-        color: '#FFFFFFE3',
-        fontSize: 17,
-    },
     signupText: {
         color: '#121212',
         paddingBottom: 10,
         fontSize: 17,
+    },
+    forgotPassword: {
+        color: '#2196F3',
+        fontSize: 17,
+        paddingBottom: 10,
     },
 });
 

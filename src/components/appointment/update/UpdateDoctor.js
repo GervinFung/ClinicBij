@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Alert, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, Alert, SafeAreaView } from 'react-native';
 
 import {Picker} from '@react-native-picker/picker';
 
 import {updateDoctorOfAppointment} from '../../../logic/tempAppointmentList';
 import {getAvailableDoctor} from '../../../logic/tempDoctorList';
+import TouchableButton, {buttonStyleDict} from '../../reusable/TouchableButton';
 
+import alertSuccess from './UpdateSuccessAlert';
 
-const ChooseDoctorView = (props) => {
+const ChooseDoctorView = ({doctorList, selectedDoctor, setSelectedDoctor}) => {
 
     const doctorImageList = [require('../../../../img/doctor/doctor1.jpg'), require('../../../../img/doctor/doctor2.jpg'), require('../../../../img/doctor/doctor3.jpg')];
 
@@ -37,8 +39,8 @@ const ChooseDoctorView = (props) => {
         },
     });
 
-    const getDoctorImage = (selectedDoctor) => {
-        const index = props.doctorList.indexOf(selectedDoctor);
+    const getDoctorImage = (itemValue) => {
+        const index = doctorList.indexOf(itemValue);
         if (index >= 0 && index <= 2) {
             return doctorImageList[index];
         }
@@ -51,16 +53,16 @@ const ChooseDoctorView = (props) => {
             <Image source={doctorImage} style={styles.image}/>
             <Picker
                 style={pickerStyle.pickerView}
-                selectedValue={props.selectedDoctor}
+                selectedValue={selectedDoctor}
                 onValueChange={(itemValue) => {
-                    props.setSelectedDoctor(itemValue);
+                    setSelectedDoctor(itemValue);
                     setDoctorImage(getDoctorImage(itemValue));
                 }}
             >
-                {props.doctorList.map((doctor, i) => {return <Picker.Item key={i + doctor} value={doctor} label={doctor} />;})}
+                {doctorList.map((doctor, i) => {return <Picker.Item key={i + doctor} value={doctor} label={doctor} />;})}
             </Picker>
             <View style={styles.chosenText}>
-                <Text style={styles.inputTitle}><Text style={styles.chosenBold}>New Doctor Chosen: </Text>{props.selectedDoctor.replace('Doctor', '')}</Text>
+                <Text style={styles.inputTitle}><Text style={styles.chosenBold}>New Doctor Chosen: </Text>{selectedDoctor.replace('Doctor', '')}</Text>
             </View>
         </View>
     );
@@ -87,17 +89,15 @@ const UpdateDoctorScreen = ({ route, navigation }) => {
 
 
     const confirmUpdateDoctor =  () => {
-        Alert.alert(
-            'Update Appointment Doctor Confirmation', 'Are you sure newly selected doctor is correct?\nYou can always change the information later should you need to', [{
-                    text: 'No', style: 'cancel',
-                }, {
-                    text: 'Yes', onPress: () => {
-                        updateDoctorOfAppointment(undefined, id, selectedDoctor);
-                        navigation.navigate('UpdateAppointmentScreen');
-                    },
+        Alert.alert('Update Appointment Doctor Confirmation', 'Are you sure newly selected doctor is correct?\nYou can always change the information later should you need to', [{
+                text: 'No', style: 'cancel',
+            }, {
+                text: 'Yes', onPress: () => {
+                    updateDoctorOfAppointment(undefined, id, selectedDoctor);
+                    alertSuccess(navigation);
                 },
-            ]
-        );
+            },
+        ]);
     };
 
     return (
@@ -118,14 +118,11 @@ const UpdateDoctorScreen = ({ route, navigation }) => {
                         doctorList={doctorList}
                     />
                 </View>
-                <View style={styles.generalView}>
-                    <TouchableOpacity
-                        style={styles.confirmButton}
-                        onPress={confirmUpdateDoctor}
-                    >
-                        <Text style={styles.confirmText}>Update Appointment</Text>
-                    </TouchableOpacity>
-                </View>
+                <TouchableButton
+                    onPress={confirmUpdateDoctor}
+                    text="Update Appointment"
+                    buttonStyle={buttonStyleDict.GREEN}
+                />
             </ScrollView>
         </SafeAreaView>
     );
@@ -162,22 +159,6 @@ const styles = StyleSheet.create({
     },
     text: {
         textAlign: 'center',
-    },
-    confirmButton: {
-        backgroundColor: '#059862',
-        width: '80%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingBottom: 10,
-        paddingTop: 10,
-        paddingLeft: 10,
-        paddingRight: 10,
-        borderRadius: 15,
-        margin: 5,
-    },
-    confirmText: {
-        color: '#FFFFFFE3',
-        fontSize: 17,
     },
     inputTitle: {
         fontSize: 17,

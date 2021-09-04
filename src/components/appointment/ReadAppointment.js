@@ -1,91 +1,15 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableHighlight, Image } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, FlatList, Image } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
-
-import {isDoneStatus, isPendingStatus, isCancelledStatus, getFilteredAppointmentList, getOptionList} from '../../logic/tempAppointmentList';
-
-const DONE = require('../../../img/appointmentStatus/done.jpg');
-const CANCELLED = require('../../../img/appointmentStatus/cancelled.jpg');
-const PENDING = require('../../../img/appointmentStatus/pending.jpg');
-
-const AppointmentView = (props) => {
-
-    const appointmentStyles = StyleSheet.create({
-        containerView: {
-            width: '100%',
-            padding: 10,
-        },
-        spaceBetweenView: {
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-            justifyContent: 'space-between',
-        },
-        importantText: {
-            fontSize: 18,
-            fontWeight: 'bold',
-        },
-        text: {
-            fontSize: 17,
-        },
-        statusText: {
-            fontStyle: 'italic',
-        },
-        image: {
-            width: 50,
-            height: 50,
-        },
-        centerView: {
-            justifyContent: 'center',
-        },
-    });
-
-    const getStatusImage = () => {
-        if (isDoneStatus(props.status)) {
-            return DONE;
-        } else if (isCancelledStatus(props.status)) {
-            return CANCELLED;
-        } else if (isPendingStatus(props.status)) {
-            return PENDING;
-        }
-        throw new Error('Status should be either DONE, CANCELLED or PENDING');
-    };
-
-    return (
-        <TouchableHighlight
-            key={props.index}
-            style={appointmentStyles.containerView}
-            onShowUnderlay={props.onShowUnderlay}
-            onHideUnderlay={props.onHideUnderlay}
-        >
-            <View>
-                <View style={appointmentStyles.spaceBetweenView}>
-                    <View><Text style={appointmentStyles.importantText}>Appointment {props.index}</Text></View>
-                    <View><Text style={appointmentStyles.importantText}>{props.date}</Text></View>
-                </View>
-                <View style={appointmentStyles.spaceBetweenView}>
-                    <View style={appointmentStyles.centerView}>
-                        <Text style={appointmentStyles.text}>{props.doctor}</Text>
-                        <Text style={appointmentStyles.text}>{props.purpose}</Text>
-                        <Text style={appointmentStyles.text}>{props.time}</Text>
-                        <Text style={appointmentStyles.text}>Status: <Text style={appointmentStyles.statusText}>{props.status.toUpperCase()}</Text></Text>
-                    </View>
-                    <View style={appointmentStyles.centerView}>
-                        <Image source={getStatusImage()} style={appointmentStyles.image}/>
-                    </View>
-                </View>
-            </View>
-        </TouchableHighlight>
-    );
-};
+import {getFilteredAppointmentList, getOptionList} from '../../logic/tempAppointmentList';
+import {UntouchableAppointmentView} from '../reusable/AppointmentView';
 
 const ReadAppointmentScreen = ({ route, navigation }) => {
-
-    // const { user } = route.params;
 
     const [appointmentType, setAppointmentType] = useState('All');
     const [appointmentList, setAppointmentList] = useState(getFilteredAppointmentList(appointmentType));
 
-    const getFilterList = () => {
+    const GetFilterList = () => {
         return getOptionList().map((option, index) => {
             return <Picker.Item key={index + option} value={option} label={option} />;
         });
@@ -108,14 +32,13 @@ const ReadAppointmentScreen = ({ route, navigation }) => {
                         selectedValue={appointmentType}
                         onValueChange={setAppointmentType}
                         style={styles.pickerView}
-                    >{getFilterList()}
-                    </Picker>
+                    >{GetFilterList()}</Picker>
                 </View>
             </View>
             <FlatList
                 data={appointmentList}
                 renderItem={({ item: appointment, separators }) => (
-                    <AppointmentView
+                    <UntouchableAppointmentView
                         index={appointment.id}
                         onShowUnderlay={separators.highlight}
                         onHideUnderlay={separators.unhighlight}
